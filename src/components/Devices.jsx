@@ -1,0 +1,28 @@
+
+import NewDevice from './NewDevice';
+
+export default function Devices({ devices, onAdd, onDelete }) {
+  return (
+    <section>
+      <h2 className="text-2xl font-bold text-stone-700 my-4">Devices</h2>
+      <NewDevice onAdd={onAdd} />
+      {devices.length === 0 && (
+        <p className="text-stone-800 my-4">
+          This room does not have any devices yet
+        </p>
+      )}
+      {devices.length > 0 && (
+        <ul className="p-4 mt-8 rounded-md bg-stone-100">
+          {devices.map((device) => (
+            <li key={device.id} className="flex justify-between my-4">
+              <span>{device.text}</span>
+              <button className="text-stone-800 hover:text-stone-950" onClick={() => onDelete(device.id)}>
+                Clear
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
