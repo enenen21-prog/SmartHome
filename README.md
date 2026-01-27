@@ -81,4 +81,5 @@ generation.
 2 Backend: ASP.NET Core Web API, Entity Framework Core
 
 3 Database: SQL Server (time-series optimized)
+
 4 Notifications: Email (SMTP / SendGrid)
