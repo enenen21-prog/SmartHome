@@ -1,10 +1,13 @@
-import MenuSidebar from './components/MenuSidebar.jsx';
-import NewRoom from './components/NewRoom.jsx';
-import NoRoomSelected from './components/NoRoomSelected.jsx';
 import { useState } from 'react';
-import SelectedRoom from './components/SelectedRoom.jsx';
+import MenuSidebar from './components/MenuSidebar.jsx';
+import Dashboard from './components/Dashboard.jsx';
+import RoomsPage from './components/RoomsPage.jsx';
+import Alerts from './components/Alerts.jsx';
 
-function App() {
+export default function App() {
+  // which menu item is active
+  const [activeOption, setActiveOption] = useState('dashboard');
+
   const [roomsState, setRoomsState] = useState({
     selectedRoomId: undefined,
     rooms: [],
@@ -21,7 +24,7 @@ function App() {
 
       return {
         ...prevState,
-        devices: [newDevice, ...prevState.devices]
+        devices: [newDevice, ...prevState.devices],
       };
     });
   }
@@ -30,48 +33,34 @@ function App() {
     setRoomsState((prevState) => {
       return {
         ...prevState,
-        devices: prevState.devices.filter(
-          (device) => device.id !== id,
-        ),
+        devices: prevState.devices.filter((device) => device.id !== id),
       };
     });
   }
 
-  function handleSelectRoom(id) {
-    setRoomsState((prevState) => {
-      return {
-        ...prevState,
-        selectedRoomId: id,
-      };
-    });
-  }
+function handleDeleteRoom(id) {
+  setRoomsState((prevState) => {
+    const updatedRooms = prevState.rooms.filter((room) => room.id !== id);
+    const isDeletedSelected = prevState.selectedRoomId === id;
+
+    return {
+      ...prevState,
+      rooms: updatedRooms,
+      selectedRoomId:
+        updatedRooms.length === 0
+          ? undefined // no rooms left → show NoRoomsAdded
+          : isDeletedSelected
+          ? updatedRooms[0].id // deleted current room → select first room
+          : prevState.selectedRoomId, // else keep current selection
+    };
+  });
+}
 
   function handleStartAddRoom() {
     setRoomsState((prevState) => {
       return {
         ...prevState,
         selectedRoomId: null,
-      };
-    });
-  }
-
-  function handleCancelAddRoom() {
-    setRoomsState((prevState) => {
-      return {
-        ...prevState,
-        selectedRoomId: undefined,
-      };
-    });
-  }
-
-  function handleDeleteRoom() {
-    setRoomsState((prevState) => {
-      return {
-        ...prevState,
-        selectedRoomId: undefined,
-        rooms: prevState.rooms.filter(
-          (room) => room.id !== prevState.selectedRoomId,
-        ),
       };
     });
   }
@@ -85,44 +74,52 @@ function App() {
     setRoomsState((prevState) => {
       return {
         ...prevState,
-        selectedRoomId: undefined,
+        selectedRoomId: newRoom.id,
         rooms: [...prevState.rooms, newRoom],
       };
     });
   }
 
-  const selectedRoom = roomsState.rooms.find(
-    (room) => room.id === roomsState.selectedRoomId,
-  );
-  let content = (
-    <SelectedRoom
-      room={selectedRoom}
-      onDelete={handleDeleteRoom}
-      onAddDevice={handleAddDevice}
-      onDeleteDevice={handleDeleteDevice}
-      devices={roomsState.devices}
-    />
-  );
+  function handleCancelAddRoom() {
+    setRoomsState((prevState) => {
+      return {
+        ...prevState,
+        selectedRoomId: undefined,
+      };
+    });
+  }
 
-  if (roomsState.selectedRoomId === null) {
-    content = (
-      <NewRoom onAdd={handleAddRoom} onCancel={handleCancelAddRoom} />
-    );
-  } else if (roomsState.selectedRoomId === undefined) {
-    content = <NoRoomSelected onStartAddRoom={handleStartAddRoom} />;
+  function renderContent() {
+    switch (activeOption) {
+      case 'rooms':
+        return (
+          <RoomsPage
+            roomsState={roomsState}
+            onStartAddRoom={handleStartAddRoom}
+            onAddRoom={handleAddRoom}
+            onCancelAddRoom={handleCancelAddRoom}
+            onDeleteRoom={handleDeleteRoom}
+            onAddDevice={handleAddDevice}
+            onDeleteDevice={handleDeleteDevice}
+            devices={roomsState.devices}
+          />
+        );
+      case 'alerts':
+        return <Alerts roomsState={roomsState} />;
+      default:
+        return <Dashboard roomsState={roomsState} />;
+    }
   }
 
   return (
-    <main className="h-screen my-8 flex gap-8">
-      <MenuSidebar
-        onStartAddRoom={handleStartAddRoom}
-        rooms={roomsState.rooms}
-        onSelectRoom={handleSelectRoom}
-        selectedRoomId={roomsState.selectedRoomId}
-      />
-      {content}
+    <main className="h-screen flex gap-8 my-8">
+      {/* Sidebar */}
+      <MenuSidebar activeOption={activeOption} onSelect={setActiveOption} />
+
+      {/* Page content */}
+      <div className="flex-1 p-6 bg-stone-100 rounded-xl">
+        {renderContent()}
+      </div>
     </main>
   );
 }
-
-export default App;
