@@ -1,4 +1,3 @@
-
 import NewDevice from './NewDevice';
 
 export default function Devices({ devices, onAdd, onDelete }) {
@@ -16,7 +15,10 @@ export default function Devices({ devices, onAdd, onDelete }) {
           {devices.map((device) => (
             <li key={device.id} className="flex justify-between my-4">
               <span>{device.text}</span>
-              <button className="text-stone-800 hover:text-stone-950" onClick={() => onDelete(device.id)}>
+              <button
+                className="px-3 py-1 rounded-md text-stone-700 transition hover:bg-stone-200"
+                onClick={() => onDelete(device.id)}
+              >
                 Clear
               </button>
             </li>

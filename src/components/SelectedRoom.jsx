@@ -7,7 +7,6 @@ export default function SelectedRoom({
   onDeleteDevice,
   devices,
 }) {
-
   return (
     <div className="w-[35rem] mt-16">
       <header className=" pb-4 mb-4 border-b-2 border-stone-300">
@@ -16,7 +15,7 @@ export default function SelectedRoom({
             {selectedRoom.title}
           </h1>
           <button
-            className="text-stone-800 hover:text-stone-950"
+            className="px-3 py-1 rounded-md text-stone-700 transition hover:bg-stone-200"
             onClick={() => onDeleteRoom(selectedRoom.id)}
           >
             Delete
