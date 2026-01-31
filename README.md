@@ -1,8 +1,5 @@
 Under Construction...
 
-Link: https://enenen21-prog.github.io/SmartHome/
-
-
 Smart Indoor Environment Monitoring System
 
 This document describes a full-stack smart indoor monitoring system including user management,
