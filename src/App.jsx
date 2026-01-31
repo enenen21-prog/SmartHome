@@ -6,10 +6,11 @@ import Alerts from './components/Alerts.jsx';
 
 export default function App() {
   // which menu item is active
-  const [activeOption, setActiveOption] = useState('dashboard');
+  const [activeOption, setActiveOption] = useState('rooms');
 
   const [roomsState, setRoomsState] = useState({
-    selectedRoomId: undefined,
+    view: 'empty', // 'empty' | 'new' | 'list' | 'details'
+    selectedRoomId: null,
     rooms: [],
     devices: [],
   });
@@ -38,29 +39,37 @@ export default function App() {
     });
   }
 
-function handleDeleteRoom(id) {
-  setRoomsState((prevState) => {
-    const updatedRooms = prevState.rooms.filter((room) => room.id !== id);
-    const isDeletedSelected = prevState.selectedRoomId === id;
+  function handleDeleteRoom(id) {
+    setRoomsState((prevState) => {
+      const remainingRooms = prevState.rooms.filter((room) => room.id !== id);
 
-    return {
-      ...prevState,
-      rooms: updatedRooms,
-      selectedRoomId:
-        updatedRooms.length === 0
-          ? undefined // no rooms left → show NoRoomsAdded
-          : isDeletedSelected
-          ? updatedRooms[0].id // deleted current room → select first room
-          : prevState.selectedRoomId, // else keep current selection
-    };
-  });
-}
+      if (remainingRooms.length === 0) {
+        return {
+          ...prevState,
+          rooms: [],
+          selectedRoomId: null,
+          view: 'empty',
+        };
+      }
+
+      const deletedSelected = prevState.selectedRoomId === id;
+
+      return {
+        ...prevState,
+        rooms: remainingRooms,
+        selectedRoomId: deletedSelected
+          ? remainingRooms[0].id
+          : prevState.selectedRoomId,
+        view: 'list',
+      };
+    });
+  }
 
   function handleStartAddRoom() {
     setRoomsState((prevState) => {
       return {
         ...prevState,
-        selectedRoomId: null,
+        view: 'new',
       };
     });
   }
@@ -76,8 +85,17 @@ function handleDeleteRoom(id) {
         ...prevState,
         selectedRoomId: newRoom.id,
         rooms: [...prevState.rooms, newRoom],
+        view: 'list',
       };
     });
+  }
+
+  function handleSelectRoom(id) {
+    setRoomsState((prev) => ({
+      ...prev,
+      selectedRoomId: id,
+      view: 'details', // switches from list to SelectedRoom page
+    }));
   }
 
   function handleCancelAddRoom() {
@@ -101,6 +119,7 @@ function handleDeleteRoom(id) {
             onDeleteRoom={handleDeleteRoom}
             onAddDevice={handleAddDevice}
             onDeleteDevice={handleDeleteDevice}
+            onSelectRoom={handleSelectRoom}
             devices={roomsState.devices}
           />
         );

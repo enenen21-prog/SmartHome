@@ -1,6 +1,7 @@
 import NewRoom from './NewRoom.jsx';
 import NoRoomsAdded from './NoRoomsAdded.jsx';
-import RoomsList from './RoomsList.jsx'; 
+import RoomsList from './RoomsList.jsx';
+import SelectedRoom from './SelectedRoom.jsx';
 
 export default function RoomsPage({
   roomsState,
@@ -8,16 +9,37 @@ export default function RoomsPage({
   onAddRoom,
   onCancelAddRoom,
   onDeleteRoom,
+  onSelectRoom,
   onAddDevice,
   onDeleteDevice,
 }) {
-
-  if (roomsState.selectedRoomId === undefined) {
-    return <NoRoomsAdded onStartAddRoom={onStartAddRoom} />;
+  switch (roomsState.view) {
+    case 'empty':
+      return <NoRoomsAdded onStartAddRoom={onStartAddRoom} />;
+    case 'new':
+      return <NewRoom onAdd={onAddRoom} onCancel={onCancelAddRoom} />;
+    case 'details': {
+      const selectedRoom = roomsState.rooms.find(
+        (room) => room.id === roomsState.selectedRoomId,
+      );
+      return (
+        <SelectedRoom
+          selectedRoom={selectedRoom}
+          onDeleteRoom={onDeleteRoom}
+          onAddDevice={onAddDevice}
+          onDeleteDevice={onDeleteDevice}
+          devices={roomsState.devices}
+        />
+      );
+    }
   }
-  if (roomsState.selectedRoomId === null) {
-    return <NewRoom onAdd={onAddRoom} onCancel={onCancelAddRoom} />;
-  }
 
-  return <RoomsList roomsList={roomsState.rooms} onStartAddRoom={onStartAddRoom} onDeleteRoom={onDeleteRoom}/>;
+  return (
+    <RoomsList
+      roomsList={roomsState.rooms}
+      onStartAddRoom={onStartAddRoom}
+      onDeleteRoom={onDeleteRoom}
+      onSelectRoom={onSelectRoom}
+    />
+  );
 }
