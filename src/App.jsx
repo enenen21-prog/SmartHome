@@ -10,7 +10,7 @@ export default function App() {
 
   const [roomsState, setRoomsState] = useState({
     view: 'empty', // 'empty' | 'new' | 'list' | 'details'
-    selectedRoomId: null,
+    selectedRoomId: null, // null = no room selected
     rooms: [],
     devices: [],
   });
@@ -99,12 +99,43 @@ export default function App() {
   }
 
   function handleCancelAddRoom() {
-    setRoomsState((prevState) => {
+    setRoomsState((prev) => {
+      if (prev.rooms.length === 0) {
+        return {
+          ...prev,
+          view: 'empty',
+          selectedRoomId: null,
+        };
+      }
+
       return {
-        ...prevState,
-        selectedRoomId: undefined,
+        ...prev,
+        view: 'list',
+        selectedRoomId: null,
       };
     });
+  }
+
+  function handleSelectMenu(option) {
+    setActiveOption(option);
+
+    if (option === 'rooms') {
+      setRoomsState((prev) => {
+        // No rooms → NoRoomsAdded
+        if (prev.rooms.length === 0) {
+          return {
+            ...prev,
+            view: 'empty',
+            selectedRoomId: null,
+          };
+        }
+
+        return {
+          ...prev,
+          view: 'list',
+        };
+      });
+    }
   }
 
   function renderContent() {
@@ -120,7 +151,6 @@ export default function App() {
             onAddDevice={handleAddDevice}
             onDeleteDevice={handleDeleteDevice}
             onSelectRoom={handleSelectRoom}
-            devices={roomsState.devices}
           />
         );
       case 'alerts':
@@ -133,7 +163,7 @@ export default function App() {
   return (
     <main className="h-screen flex gap-8 my-8">
       {/* Sidebar */}
-      <MenuSidebar activeOption={activeOption} onSelect={setActiveOption} />
+      <MenuSidebar activeOption={activeOption} onSelect={handleSelectMenu} />
 
       {/* Page content */}
       <div className="flex-1 p-6 bg-stone-100 rounded-xl">

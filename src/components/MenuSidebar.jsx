@@ -1,8 +1,8 @@
 import Button from './Button';
 
 const MENU_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard' },
   { id: 'rooms', label: 'Rooms' },
+  { id: 'dashboard', label: 'Dashboard' },
   { id: 'alerts', label: 'Alerts' },
 ];
 
