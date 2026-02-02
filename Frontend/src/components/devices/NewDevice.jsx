@@ -1,8 +1,11 @@
-import { useState } from 'react';
-import Button from './Button';
+import { useContext, useState } from 'react';
+import { LayoutContext } from '../../layout/layout-context.jsx';
 
-export default function newDevice({ onAdd }) {
+import Button from '../Button.jsx';
+
+export default function newDevice() {
   const [device, setDevice] = useState('');
+   const { addDevice } = useContext(LayoutContext);
 
   function handleChange(event) {
     setDevice(event.target.value);
@@ -12,7 +15,7 @@ export default function newDevice({ onAdd }) {
     if (device.trim() === '') {
       return;
     }
-    onAdd(device);
+    addDevice (device);
     setDevice('')
   }
 

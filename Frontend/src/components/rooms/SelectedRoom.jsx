@@ -1,12 +1,23 @@
-import Devices from './Devices';
+import { useContext } from 'react';
+import { LayoutContext } from '../../layout/layout-context.jsx';
 
-export default function SelectedRoom({
-  selectedRoom,
-  onDeleteRoom,
-  onAddDevice,
-  onDeleteDevice,
-  devices,
-}) {
+import Devices from '../devices/Devices.jsx';
+
+export default function SelectedRoom() {
+  const {
+    rooms,
+    selectedRoomId,
+    devices,
+    deleteRoom,
+    addDevice,
+    deleteDevice,
+  } = useContext(LayoutContext);
+
+  const selectedRoom = rooms.find((r) => r.id === selectedRoomId);
+  if (!selectedRoom) return null; // safety check
+
+  const roomDevices = devices.filter((d) => d.roomId === selectedRoom.id);
+
   return (
     <div className="w-[35rem] mt-16">
       <header className=" pb-4 mb-4 border-b-2 border-stone-300">
@@ -16,7 +27,7 @@ export default function SelectedRoom({
           </h1>
           <button
             className="px-3 py-1 rounded-md text-stone-700 transition hover:bg-stone-200"
-            onClick={() => onDeleteRoom(selectedRoom.id)}
+            onClick={() => deleteRoom(selectedRoom.id)}
           >
             Delete
           </button>
@@ -26,9 +37,6 @@ export default function SelectedRoom({
         </p>
       </header>
       <Devices
-        onAdd={onAddDevice}
-        onDelete={onDeleteDevice}
-        devices={devices.filter((device) => device.roomId === selectedRoom.id)}
       />
     </div>
   );

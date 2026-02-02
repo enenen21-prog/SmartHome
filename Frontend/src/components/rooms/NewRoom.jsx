@@ -1,28 +1,29 @@
-import { useRef } from 'react';
-import Input from './Input';
-import Modal from './Modal';
-import Button from './Button';
+import { useContext, useRef } from 'react';
+import { LayoutContext } from '../../layout/layout-context.jsx';
 
-export default function NewRoom({ onAdd, onCancel }) {
+import Input from '../Input';
+import Modal from '../Modal';
+import Button from '../Button';
+
+export default function NewRoom() {
   const modal = useRef();
   const title = useRef();
   const description = useRef();
+
+  const { addRoom, cancelAddRoom } = useContext(LayoutContext);
 
   function handleSave() {
     const enteredTitle = title.current.value;
     const enteredDescription = description.current.value;
 
-    if (
-      enteredTitle.trim() === '' ||
-      enteredDescription.trim() === '' 
-    ) {
+    if (enteredTitle.trim() === '' || enteredDescription.trim() === '') {
       modal.current.open();
       return;
     }
 
-    onAdd({
+    addRoom({
       title: enteredTitle,
-      description: enteredDescription
+      description: enteredDescription,
     });
   }
 
@@ -37,7 +38,7 @@ export default function NewRoom({ onAdd, onCancel }) {
           <li>
             <button
               className="text-stone-800 hover:text-stone-950"
-              onClick={onCancel}
+              onClick={cancelAddRoom}
             >
               Cancel
             </button>
