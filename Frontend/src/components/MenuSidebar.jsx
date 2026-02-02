@@ -8,6 +8,7 @@ const MENU_ITEMS = [
   { id: 'alerts', label: 'Alerts' },
 ];
 
+
 export default function MenuSidebar({ activeOption, onSelectOption }) {
   const { selectMenu } = useContext(LayoutContext);
   return (
