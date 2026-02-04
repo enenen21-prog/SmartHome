@@ -1,7 +1,9 @@
-import { createContext, useReducer } from 'react';
+import { createContext, useReducer, useEffect } from 'react';
+import { fetchRooms, createRoom } from '../api/rooms.api';
 
 const initialLayoutState = {
   view: 'empty', // 'empty' | 'new' | 'list' | 'details'
+  isLoadingRooms: true,
   selectedRoomId: null,
   rooms: [],
   devices: [],
@@ -29,15 +31,10 @@ function layoutReducer(state, action) {
       };
 
     case 'ADD_ROOM': {
-      const newRoom = {
-        ...action.roomData,
-        id: Math.random(),
-      };
-
       return {
         ...state,
-        rooms: [...state.rooms, newRoom],
-        selectedRoomId: newRoom.id,
+        rooms: [...state.rooms, action.room],
+        selectedRoomId: action.room.id,
         view: 'list',
       };
     }
@@ -85,12 +82,28 @@ function layoutReducer(state, action) {
       };
 
     case 'SELECT_MENU':
-      action.func(action.option)
+      action.func(action.option);
       if (action.option !== 'rooms') return state;
 
       return state.rooms.length === 0
         ? { ...state, view: 'empty', selectedRoomId: null }
         : { ...state, view: 'list' };
+
+    case 'SET_ROOMS':
+      return {
+        ...state,
+        rooms: action.rooms,
+        isLoadingRooms: false,
+        // Set view to 'list' if rooms exist, otherwise 'empty'
+        view: action.rooms.length > 0 ? 'list' : 'empty',
+      };
+
+    case 'SET_ROOMS_FAILED':
+      return {
+        ...state,
+        isLoadingRooms: false,
+        view: state.rooms.length > 0 ? state.view : 'empty',
+      };
 
     default:
       return state;
@@ -102,19 +115,34 @@ export const LayoutContext = createContext(null);
 export function LayoutContextProvider({ children }) {
   const [state, dispatch] = useReducer(layoutReducer, initialLayoutState);
 
+  useEffect(() => {
+    async function loadRooms() {
+      try {
+        const data = await fetchRooms();
+        dispatch({ type: 'SET_ROOMS', rooms: data });
+      } catch (error) {
+        console.error('Could not load rooms:', error);
+        dispatch({ type: 'SET_ROOMS_FAILED' });
+      }
+    }
+    loadRooms();
+  }, []);
+
   const value = {
     ...state,
     addDevice: (text) => dispatch({ type: 'ADD_DEVICE', text }),
     deleteDevice: (id) => dispatch({ type: 'DELETE_DEVICE', id }),
-    addRoom: (roomData) => dispatch({ type: 'ADD_ROOM', roomData }),
+    addRoom: async (roomData) => {
+      const createdRoom = await createRoom(roomData);
+      dispatch({ type: 'ADD_ROOM', room: createdRoom });
+    },
     deleteRoom: (id) => dispatch({ type: 'DELETE_ROOM', id }),
     startAddRoom: () => dispatch({ type: 'START_ADD_ROOM' }),
     cancelAddRoom: () => dispatch({ type: 'CANCEL_ADD_ROOM' }),
     selectRoom: (id) => dispatch({ type: 'SELECT_ROOM', id }),
-    selectMenu: (func, option) => dispatch({ type: 'SELECT_MENU', func, option}),
+    selectMenu: (func, option) =>
+      dispatch({ type: 'SELECT_MENU', func, option }),
   };
-
-
 
   return (
     <LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>

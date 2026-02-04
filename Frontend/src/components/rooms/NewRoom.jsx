@@ -12,7 +12,7 @@ export default function NewRoom() {
 
   const { addRoom, cancelAddRoom } = useContext(LayoutContext);
 
-  function handleSave() {
+  async  function handleSave() {
     const enteredTitle = title.current.value;
     const enteredDescription = description.current.value;
 
@@ -21,7 +21,7 @@ export default function NewRoom() {
       return;
     }
 
-    addRoom({
+    await addRoom({
       title: enteredTitle,
       description: enteredDescription,
     });
