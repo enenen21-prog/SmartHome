@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:5201/api';
 
 export async function fetchRooms() {
   const res = await fetch(`${BASE_URL}/rooms`);
