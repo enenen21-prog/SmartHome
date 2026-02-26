@@ -5,66 +5,45 @@ namespace MyApi.Services
 {
     public class RoomService : IRoomService
     {
-        private readonly IWebHostEnvironment _env;
+        private readonly string _filePath;
 
         public RoomService(IWebHostEnvironment env)
         {
-            _env = env;
+            _filePath = Path.Combine(env.ContentRootPath, "Data", "rooms.json");
         }
 
-        private string GetFilePath()
+        private async Task<List<Room>> ReadRoomsAsync()
         {
-            return Path.Combine(_env.ContentRootPath, "Data", "rooms.json");
+            if (!File.Exists(_filePath)) return new List<Room>();
+            var content = await File.ReadAllTextAsync(_filePath);
+            return JsonSerializer.Deserialize<List<Room>>(content) ?? new List<Room>();
         }
 
-        public async Task<List<Room>> GetRoomsAsync()
+        private async Task WriteRoomsAsync(List<Room> rooms)
         {
-            var filePath = GetFilePath();
-
-            if (!File.Exists(filePath))
-                return new List<Room>();
-
-            var fileContent = await File.ReadAllTextAsync(filePath);
-
-            return JsonSerializer.Deserialize<List<Room>>(fileContent)
-                   ?? new List<Room>();
+            var json = JsonSerializer.Serialize(rooms, new JsonSerializerOptions { WriteIndented = true });
+            await File.WriteAllTextAsync(_filePath, json);
         }
+
+        public async Task<List<Room>> GetRoomsAsync() => await ReadRoomsAsync();
 
         public async Task<Room> AddRoomAsync(Room newRoom)
         {
-            var rooms = await GetRoomsAsync();
-
+            var rooms = await ReadRoomsAsync();
             newRoom.Id = Guid.NewGuid();
             rooms.Add(newRoom);
-
-            var json = JsonSerializer.Serialize(rooms, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
-
-            await File.WriteAllTextAsync(GetFilePath(), json);
-
+            await WriteRoomsAsync(rooms);
             return newRoom;
         }
 
         public async Task<bool> DeleteRoomAsync(Guid id)
         {
-            var rooms = await GetRoomsAsync();
-
+            var rooms = await ReadRoomsAsync();
             var room = rooms.FirstOrDefault(r => r.Id == id);
-
-            if (room == null)
-                return false;
+            if (room == null) return false;
 
             rooms.Remove(room);
-
-            var json = JsonSerializer.Serialize(rooms, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
-
-            await File.WriteAllTextAsync(GetFilePath(), json);
-
+            await WriteRoomsAsync(rooms);
             return true;
         }
     }

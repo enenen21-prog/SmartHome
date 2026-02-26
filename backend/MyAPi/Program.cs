@@ -1,3 +1,5 @@
+using MyApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
@@ -14,6 +16,8 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+builder.Services.AddScoped<IRoomService, RoomService>();
 
 var app = builder.Build();
 
