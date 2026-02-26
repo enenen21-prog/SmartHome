@@ -1,5 +1,5 @@
 import { createContext, useReducer, useEffect } from 'react';
-import { fetchRooms, createRoom } from '../api/rooms.api';
+import { fetchRooms, createRoom, deleteRoomApi } from '../api/rooms.api';
 
 const initialLayoutState = {
   view: 'empty', // 'empty' | 'new' | 'list' | 'details'
@@ -133,10 +133,21 @@ export function LayoutContextProvider({ children }) {
     addDevice: (text) => dispatch({ type: 'ADD_DEVICE', text }),
     deleteDevice: (id) => dispatch({ type: 'DELETE_DEVICE', id }),
     addRoom: async (roomData) => {
-      const createdRoom = await createRoom(roomData);
-      dispatch({ type: 'ADD_ROOM', room: createdRoom });
+      try {
+        const createdRoom = await createRoom(roomData);
+        dispatch({ type: 'ADD_ROOM', room: createdRoom });
+      } catch (error) {
+        console.error('Failed to create room:', error);
+      }
     },
-    deleteRoom: (id) => dispatch({ type: 'DELETE_ROOM', id }),
+    deleteRoom: async (id) => {
+      try {
+        await deleteRoomApi(id);
+        dispatch({ type: 'DELETE_ROOM', id });
+      } catch (error) {
+        console.error('Failed to delete room:', error);
+      }
+    },
     startAddRoom: () => dispatch({ type: 'START_ADD_ROOM' }),
     cancelAddRoom: () => dispatch({ type: 'CANCEL_ADD_ROOM' }),
     selectRoom: (id) => dispatch({ type: 'SELECT_ROOM', id }),

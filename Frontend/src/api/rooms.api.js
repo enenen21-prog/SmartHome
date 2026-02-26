@@ -17,19 +17,7 @@ export async function createRoom(roomData) {
   return res.json();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-export async function deleteRoom(id) {
+export async function deleteRoomApi(id) {
   const res = await fetch(`${BASE_URL}/rooms/${id}`, {
     method: 'DELETE',
   });

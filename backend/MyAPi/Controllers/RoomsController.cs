@@ -34,10 +34,6 @@ public class RoomsController : ControllerBase
     }
 
 
-
-
-
-
     // POST /api/Rooms
     [HttpPost]
     public async Task<IActionResult> AddRoom([FromBody] Room newRoom)
@@ -77,6 +73,47 @@ public class RoomsController : ControllerBase
         {
             Console.Error.WriteLine(ex);
             return StatusCode(500, new { message = "Failed to create room" });
+        }
+    }
+
+    // DELETE /api/Rooms/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRoom(Guid id)
+    {
+        try
+        {
+            var filePath = Path.Combine(_env.ContentRootPath, "Data", "rooms.json");
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound(new { message = "Rooms file not found" });
+            }
+
+            var fileContent = await System.IO.File.ReadAllTextAsync(filePath);
+            var rooms = JsonSerializer.Deserialize<List<Room>>(fileContent) ?? new List<Room>();
+
+            var roomToDelete = rooms.FirstOrDefault(r => r.Id == id);
+
+            if (roomToDelete == null)
+            {
+                return NotFound(new { message = "Room not found" });
+            }
+
+            rooms.Remove(roomToDelete);
+
+            var json = JsonSerializer.Serialize(rooms, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            await System.IO.File.WriteAllTextAsync(filePath, json);
+
+            return NoContent(); // 204 success
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            return StatusCode(500, new { message = "Failed to delete room" });
         }
     }
 
