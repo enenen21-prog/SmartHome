@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost:5201';
 
 
 export async function fetchDevicesByRoom(roomId) {

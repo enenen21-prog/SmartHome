@@ -1,22 +1,20 @@
 [
   {
-    "Id": "f94872b5-9bc5-45da-a550-5025ce01a942",
-    "Title": "33",
-    "Description": "33"
+    "Id": "754bcf9c-b5be-41b9-aa1f-9d1cbada960f",
+    "Title": "asdasdasd",
+    "Description": "asdasdasd",
+    "Devices": []
   },
   {
-    "Id": "8edb9803-2841-49bb-968e-e2ba2c65cd90",
-    "Title": "44",
-    "Description": "44"
+    "Id": "0484dc8c-a8a8-4df3-aaf7-a2ef5bc04998",
+    "Title": "sadasd",
+    "Description": "asdasd",
+    "Devices": []
   },
   {
-    "Id": "2e239364-3d30-40e9-a0c4-dc40a3a78a5d",
-    "Title": "dasd",
-    "Description": "asdasdasd"
-  },
-  {
-    "Id": "219bdfe5-1614-4ba5-9571-62df65b8b62c",
-    "Title": "ddd",
-    "Description": "ddd"
+    "Id": "a86fef52-a96d-4809-abec-ddd556341152",
+    "Title": "asdasd",
+    "Description": "asdasd",
+    "Devices": []
   }
 ]
