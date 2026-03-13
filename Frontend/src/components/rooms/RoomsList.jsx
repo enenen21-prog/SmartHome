@@ -22,7 +22,7 @@ export default function RoomsList() {
   }
 
   return (
-    <section>
+    <section className="space-y-4">
       <ConfirmModal
         ref={confirmRef}
         title="Delete Room"
@@ -30,26 +30,26 @@ export default function RoomsList() {
         confirmLabel="Delete"
         onConfirm={handleConfirmDelete}
       />
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-stone-700">Rooms List</h2>
         <Button onClick={startAddRoom}>+ Add Room</Button>
       </div>
-      <ul className="p-4 rounded-md bg-stone-100">
+      <ul className="rounded-lg bg-stone-100 border border-stone-200 shadow-sm">
         {rooms.map((room) => (
           <li
             key={room.id}
-            className="flex justify-between items-center my-4 rounded-md px-2 py-1 transition-colors hover:bg-stone-200"
+            className="flex justify-between items-center px-3 py-3 border-b border-stone-200 last:border-b-0 transition-colors hover:bg-stone-200"
           >
             <span>{room.title}</span>
             <div className="flex gap-2">
               <button
-                className="px-3 py-1 rounded-md bg-stone-200 text-stone-800 transition hover:bg-stone-300"
+                className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
                 onClick={() => selectRoom(room.id)}
               >
                 Edit
               </button>
               <button
-                className="px-3 py-1 rounded-md bg-stone-200 text-stone-800 transition hover:bg-stone-300"
+                className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
                 onClick={() => handleDeleteClick(room.id)}
               >
                 Delete

@@ -22,7 +22,7 @@ export default function Devices() {
   }
 
   return (
-    <section>
+    <section className="space-y-4">
       <ConfirmModal
         ref={confirmRef}
         title="Delete Device"
@@ -30,7 +30,7 @@ export default function Devices() {
         confirmLabel="Delete"
         onConfirm={handleConfirmDelete}
       />
-      <h2 className="text-2xl font-bold text-stone-700 my-4">Devices</h2>
+      <h2 className="text-2xl font-bold text-stone-700">Devices</h2>
       <NewDevice />
       {roomDevices.length === 0 && (
         <p className="text-stone-800 my-4">
@@ -38,15 +38,15 @@ export default function Devices() {
         </p>
       )}
       {roomDevices.length > 0 && (
-        <ul className="p-4 mt-8 rounded-md bg-stone-100">
+        <ul className="rounded-lg bg-stone-100 border border-stone-200 shadow-sm">
           {roomDevices.map((device) => (
             <li
               key={device.id}
-              className="flex justify-between my-4 rounded-md px-2 py-1 transition-colors hover:bg-stone-200"
+              className="flex justify-between px-3 py-3 border-b border-stone-200 last:border-b-0 transition-colors hover:bg-stone-200"
             >
               <span>{device.name}</span>
               <button
-                className="px-3 py-1 rounded-md bg-stone-200 text-stone-800 transition hover:bg-stone-300"
+                className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
                 onClick={() => handleDeleteClick(device.id)}
               >
                 Delete

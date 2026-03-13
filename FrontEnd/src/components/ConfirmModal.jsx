@@ -42,13 +42,13 @@ const ConfirmModal = forwardRef(function ConfirmModal(
       <p className="text-stone-600 mt-2">{message}</p>
       <div className="mt-4 flex justify-end gap-2">
         <button
-          className="px-3 py-1 rounded-md bg-stone-200 text-stone-800 transition hover:bg-stone-300"
+          className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
           onClick={handleCancel}
         >
           {cancelLabel}
         </button>
         <button
-          className="px-3 py-1 rounded-md bg-stone-200 text-stone-800 transition hover:bg-stone-300"
+          className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
           onClick={handleConfirm}
         >
           {confirmLabel}

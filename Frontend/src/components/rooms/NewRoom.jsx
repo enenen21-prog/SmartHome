@@ -38,14 +38,14 @@ export default function NewRoom() {
         <h2 className="text-xl font-bold text-stone-700 my-4">Invalid input</h2>
         <p className="text-stone-600 mb-4">Please enter all fields.</p>
       </Modal>
-      <div className="w-[35rem]">
-        <h2 className="text-2xl font-bold text-stone-700 my-4">
+      <div className="w-[35rem] space-y-4">
+        <h2 className="text-2xl font-bold text-stone-700">
           Create a New Room
         </h2>
-        <menu className="flex items-center justify-end gap-4 my-4">
+        <menu className="flex items-center justify-end gap-4">
           <li>
             <button
-              className="px-3 py-1 rounded-md bg-stone-200 text-stone-800 transition hover:bg-stone-300"
+              className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
               onClick={cancelAddRoom}
             >
               Back
@@ -53,7 +53,7 @@ export default function NewRoom() {
           </li>
           <li>
             <button
-              className="px-3 py-1 rounded-md bg-stone-200 text-stone-800 transition hover:bg-stone-300"
+              className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
               onClick={handleSave}
             >
               Save
