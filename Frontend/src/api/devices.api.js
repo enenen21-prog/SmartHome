@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5201/api/devices"; // your backend URL
+const API_BASE = "http://localhost:5201/api/devices";
 
 
 export async function getDevicesByRoom(roomId) {
