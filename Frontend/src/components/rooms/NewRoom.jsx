@@ -38,7 +38,7 @@ export default function NewRoom() {
         <h2 className="text-xl font-bold text-stone-700 my-4">Invalid input</h2>
         <p className="text-stone-600 mb-4">Please enter all fields.</p>
       </Modal>
-      <div className="w-[35rem] mt-16">
+      <div className="w-[35rem]">
         <h2 className="text-2xl font-bold text-stone-700 my-4">
           Create a New Room
         </h2>

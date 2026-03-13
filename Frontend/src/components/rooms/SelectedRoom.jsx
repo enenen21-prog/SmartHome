@@ -39,7 +39,7 @@ export default function SelectedRoom() {
           <span className="text-xs uppercase tracking-wide text-stone-500">
             Description
           </span>
-          <p className="text-stone-600 whitespace-pre-wrap">
+          <p className="text-stone-700 whitespace-pre-wrap text-lg">
             {selectedRoom.description}
           </p>
         </div>

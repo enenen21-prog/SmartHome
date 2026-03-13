@@ -30,7 +30,10 @@ export default function RoomsList() {
         confirmLabel="Delete"
         onConfirm={handleConfirmDelete}
       />
-      <h2 className="text-2xl font-bold text-stone-700 mb-4">Rooms List</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold text-stone-700">Rooms List</h2>
+        <Button onClick={startAddRoom}>+ Add Room</Button>
+      </div>
       <ul className="p-4 rounded-md bg-stone-100">
         {rooms.map((room) => (
           <li
@@ -55,7 +58,6 @@ export default function RoomsList() {
           </li>
         ))}
       </ul>
-      <Button onClick={startAddRoom }>+ Add Room</Button>
     </section>
   );
 }
