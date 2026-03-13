@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MyApi.DTO;
+using MyApi.Models;
 
 public class SmartHomeDbContext : DbContext
 {

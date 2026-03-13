@@ -1,49 +1,41 @@
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using MyApi.Models;
 
 namespace MyApi.Services
 {
     public class RoomService : IRoomService
     {
-        private readonly string _filePath;
+        private readonly SmartHomeDbContext _db;
 
-        public RoomService(IWebHostEnvironment env)
+        public RoomService(SmartHomeDbContext db)
         {
-            _filePath = Path.Combine(env.ContentRootPath, "Data", "rooms.json");
+            _db = db;
         }
 
-        private async Task<List<Room>> ReadRoomsAsync()
+        public async Task<List<Room>> GetRoomsAsync()
         {
-            if (!File.Exists(_filePath)) return new List<Room>();
-            var content = await File.ReadAllTextAsync(_filePath);
-            return JsonSerializer.Deserialize<List<Room>>(content) ?? new List<Room>();
+            return await _db.Rooms.AsNoTracking().ToListAsync();
         }
-
-        private async Task WriteRoomsAsync(List<Room> rooms)
-        {
-            var json = JsonSerializer.Serialize(rooms, new JsonSerializerOptions { WriteIndented = true });
-            await File.WriteAllTextAsync(_filePath, json);
-        }
-
-        public async Task<List<Room>> GetRoomsAsync() => await ReadRoomsAsync();
 
         public async Task<Room> AddRoomAsync(Room newRoom)
         {
-            var rooms = await ReadRoomsAsync();
-            newRoom.Id = Guid.NewGuid();
-            rooms.Add(newRoom);
-            await WriteRoomsAsync(rooms);
+            if (newRoom.Id == Guid.Empty)
+            {
+                newRoom.Id = Guid.NewGuid();
+            }
+
+            _db.Rooms.Add(newRoom);
+            await _db.SaveChangesAsync();
             return newRoom;
         }
 
         public async Task<bool> DeleteRoomAsync(Guid id)
         {
-            var rooms = await ReadRoomsAsync();
-            var room = rooms.FirstOrDefault(r => r.Id == id);
+            var room = await _db.Rooms.FirstOrDefaultAsync(r => r.Id == id);
             if (room == null) return false;
 
-            rooms.Remove(room);
-            await WriteRoomsAsync(rooms);
+            _db.Rooms.Remove(room);
+            await _db.SaveChangesAsync();
             return true;
         }
     }
