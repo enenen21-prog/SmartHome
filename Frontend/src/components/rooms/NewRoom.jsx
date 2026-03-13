@@ -18,7 +18,6 @@ export default function NewRoom() {
 
     if (
       enteredTitle.trim() === '' ||
-      enteredDescription.trim() === '' ||
       enteredTitle.trim().length > 32 ||
       enteredDescription.trim().length > 64
     ) {
