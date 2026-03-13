@@ -2,6 +2,10 @@ using MyApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Adding the DbContext
+builder.Services.AddDbContext<SmartHomeDbContext>();
+
 // Add services
 builder.Services.AddControllers();
 
