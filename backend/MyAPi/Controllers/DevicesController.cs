@@ -15,15 +15,6 @@ public class DevicesController : ControllerBase
         _deviceService = deviceService;
     }
 
-    // GET: api/devices
-    [HttpGet]
-    public async Task<ActionResult<List<Device>>> GetAllDevices()
-    {
-        var devices = await _deviceService.GetAllDevicesAsync();
-        return Ok(devices);
-    }
-
-
     // GET: api/devices/room/{roomId}
     [HttpGet("room/{roomId}")]
     public async Task<ActionResult<List<Device>>> GetDevicesByRoomId(Guid roomId)

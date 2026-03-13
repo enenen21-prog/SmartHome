@@ -23,8 +23,6 @@ public class DeviceService : IDeviceService
         await File.WriteAllTextAsync(_filePath, json);
     }
 
-    public async Task<List<Device>> GetAllDevicesAsync() => await ReadDevicesAsync();
-
     public async Task<List<Device>> GetDevicesByRoomIdAsync(Guid roomId)
     {
         var devices = await ReadDevicesAsync();
