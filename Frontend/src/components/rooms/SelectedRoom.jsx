@@ -9,8 +9,6 @@ export default function SelectedRoom() {
     selectedRoomId,
     devices,
     deleteRoom,
-    addDevice,
-    deleteDevice,
   } = useContext(LayoutContext);
 
   const selectedRoom = rooms.find((r) => r.id === selectedRoomId);

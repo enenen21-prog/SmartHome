@@ -1,17 +1,12 @@
 [
   {
-    "Id": "c87391ea-5ad8-4b29-a894-1e4ad0061904",
-    "Title": "11",
-    "Description": "11"
+    "Id": "8366a6cc-621b-4e81-8153-4d74347423d1",
+    "Title": "room1",
+    "Description": "room1_desc"
   },
   {
-    "Id": "b814e439-24cb-4c79-bee1-2a1e6990c20c",
-    "Title": "22",
-    "Description": "22"
-  },
-  {
-    "Id": "44ec556d-f003-406f-b833-34175da0bedc",
-    "Title": "qweqwe",
-    "Description": "qweqwe"
+    "Id": "d813d0bf-a479-4493-b06b-73f98d2d80ef",
+    "Title": "room2",
+    "Description": "room2_desc"
   }
 ]

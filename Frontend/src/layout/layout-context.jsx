@@ -1,8 +1,6 @@
 import { createContext, useReducer, useEffect } from 'react';
 import { fetchRooms, createRoom, deleteRoomApi } from '../api/rooms.api';
-import {
-  getDevicesByRoom /*, createDevice, deleteDevice*/,
-} from '../api/devices.api';
+import { getDevicesByRoom, createDevice } from '../api/devices.api';
 
 const initialLayoutState = {
   view: 'empty', // 'empty' | 'new' | 'list' | 'details'
@@ -15,14 +13,9 @@ const initialLayoutState = {
 function layoutReducer(state, action) {
   switch (action.type) {
     case 'ADD_DEVICE': {
-      const newDevice = {
-        text: action.text,
-        roomId: state.selectedRoomId,
-      };
-
       return {
         ...state,
-        devices: [newDevice, ...state.devices],
+        devices: [action.device, ...state.devices],
       };
     }
 
@@ -144,7 +137,22 @@ export function LayoutContextProvider({ children }) {
 
   const value = {
     ...state,
-    addDevice: (text) => dispatch({ type: 'ADD_DEVICE', text }),
+    addDevice: async (name) => {
+      if (!state.selectedRoomId) {
+        throw new Error('No room selected');
+      }
+      try {
+        const createdDevice = await createDevice({
+          name,
+          roomId: state.selectedRoomId,
+        });
+        dispatch({ type: 'ADD_DEVICE', device: createdDevice });
+        return createdDevice;
+      } catch (error) {
+        console.error('Failed to create device:', error);
+        throw error;
+      }
+    },
     deleteDevice: (id) => dispatch({ type: 'DELETE_DEVICE', id }),
     addRoom: async (roomData) => {
       try {

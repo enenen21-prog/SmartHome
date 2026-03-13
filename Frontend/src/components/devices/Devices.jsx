@@ -4,12 +4,12 @@ import { LayoutContext } from '../../layout/layout-context.jsx';
 import NewDevice from './NewDevice';
 
 export default function Devices() {
-  const { devices, selectedRoomId, addDevice, deleteDevice } = useContext(LayoutContext);
+  const { devices, selectedRoomId, deleteDevice } = useContext(LayoutContext);
   const roomDevices = devices.filter((d) => d.roomId === selectedRoomId);
   return (
     <section>
       <h2 className="text-2xl font-bold text-stone-700 my-4">Devices</h2>
-      <NewDevice onAdd={addDevice} />
+      <NewDevice />
       {roomDevices.length === 0 && (
         <p className="text-stone-800 my-4">
           This room does not have any devices yet

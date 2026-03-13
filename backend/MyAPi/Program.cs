@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<IRoomService, RoomService>();
-builder.Services.AddSingleton<IDeviceService, DeviceService>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
 
 var app = builder.Build();
 

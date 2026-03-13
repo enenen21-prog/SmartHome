@@ -1,12 +1,42 @@
+using System.Text.Json;
 using MyApi.Models;
 
 public class DeviceService : IDeviceService
 {
-    private readonly List<Device> _devices = new();
+    private readonly string _filePath;
 
-    public Task<List<Device>> GetAllDevicesAsync() => Task.FromResult(_devices);
+    public DeviceService(IWebHostEnvironment env)
+    {
+        _filePath = Path.Combine(env.ContentRootPath, "Data", "devices.json");
+    }
 
-    public Task<List<Device>> GetDevicesByRoomIdAsync(Guid roomId) =>
-        Task.FromResult(_devices.Where(d => d.RoomId == roomId).ToList());
+    private async Task<List<Device>> ReadDevicesAsync()
+    {
+        if (!File.Exists(_filePath)) return new List<Device>();
+        var content = await File.ReadAllTextAsync(_filePath);
+        return JsonSerializer.Deserialize<List<Device>>(content) ?? new List<Device>();
+    }
 
+    private async Task WriteDevicesAsync(List<Device> devices)
+    {
+        var json = JsonSerializer.Serialize(devices, new JsonSerializerOptions { WriteIndented = true });
+        await File.WriteAllTextAsync(_filePath, json);
+    }
+
+    public async Task<List<Device>> GetAllDevicesAsync() => await ReadDevicesAsync();
+
+    public async Task<List<Device>> GetDevicesByRoomIdAsync(Guid roomId)
+    {
+        var devices = await ReadDevicesAsync();
+        return devices.Where(d => d.RoomId == roomId).ToList();
+    }
+
+    public async Task<Device> AddDeviceAsync(Device newDevice)
+    {
+        var devices = await ReadDevicesAsync();
+        newDevice.Id = Guid.NewGuid();
+        devices.Add(newDevice);
+        await WriteDevicesAsync(devices);
+        return newDevice;
+    }
 }

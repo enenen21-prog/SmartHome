@@ -31,4 +31,18 @@ public class DevicesController : ControllerBase
         var devices = await _deviceService.GetDevicesByRoomIdAsync(roomId);
         return Ok(devices);
     }
+
+    // POST: api/devices
+    [HttpPost]
+    public async Task<ActionResult<Device>> AddDevice([FromBody] Device newDevice)
+    {
+        if (string.IsNullOrWhiteSpace(newDevice.Name))
+            return BadRequest(new { message = "Name is required" });
+
+        if (newDevice.RoomId == Guid.Empty)
+            return BadRequest(new { message = "RoomId is required" });
+
+        var createdDevice = await _deviceService.AddDeviceAsync(newDevice);
+        return CreatedAtAction(nameof(GetDevicesByRoomId), new { roomId = createdDevice.RoomId }, createdDevice);
+    }
 }
