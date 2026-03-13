@@ -33,3 +33,4 @@ C:\DotNetWorkspace\SmartHome\backend\MyAPi\obj\Debug\net10.0\MyApi.genruntimecon
 C:\DotNetWorkspace\SmartHome\backend\MyAPi\obj\Debug\net10.0\ref\MyApi.dll
 C:\DotNetWorkspace\SmartHome\backend\MyAPi\bin\Debug\net10.0\Data\rooms.json
 C:\DotNetWorkspace\SmartHome\backend\MyAPi\obj\Debug\net10.0\MyApi.sourcelink.json
+C:\DotNetWorkspace\SmartHome\backend\MyAPi\bin\Debug\net10.0\Data\devices.json

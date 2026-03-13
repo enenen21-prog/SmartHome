@@ -19,7 +19,7 @@ export default function Devices() {
         <ul className="p-4 mt-8 rounded-md bg-stone-100">
           {roomDevices.map((device) => (
             <li key={device.id} className="flex justify-between my-4">
-              <span>{device.text}</span>
+              <span>{device.name}</span>
               <button
                 className="px-3 py-1 rounded-md text-stone-700 transition hover:bg-stone-200"
                 onClick={() => deleteDevice(device.id)}

@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "d1f2a3b4-c5d6-7e8f-9a0b-1c2d3e4f5a6b",
+    "Name": "Smart TV",
+    "RoomId": ""
+  },
+  {
+    "Id": "e2f3b4c5-d6e7-8f9a-0b1c-2d3e4f5a6b7c",
+    "Name": "Lamp",
+    "RoomId": "b814e439-24cb-4c79-bee1-2a1e6990c20c"
+  },
+  {
+    "Id": "f3g4c5d6-e7f8-9a0b-1c2d-3e4f5a6b7c8d",
+    "Name": "Air Conditioner",
+    "RoomId": "b2e6d7f8-0a9b-4c3d-9e4f-2c3d4e5f6a7b"
+  },
+  {
+    "Id": "g4h5i6j7-k8l9-0m1n-2o3p-4q5r6s7t8u9v",
+    "Name": "Fridge",
+    "RoomId": "c3f7d8e9-1a2b-3c4d-5e6f-7g8h9i0j1k2l"
+  }
+]

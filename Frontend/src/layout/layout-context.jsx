@@ -1,5 +1,8 @@
 import { createContext, useReducer, useEffect } from 'react';
 import { fetchRooms, createRoom, deleteRoomApi } from '../api/rooms.api';
+import {
+  getDevicesByRoom /*, createDevice, deleteDevice*/,
+} from '../api/devices.api';
 
 const initialLayoutState = {
   view: 'empty', // 'empty' | 'new' | 'list' | 'details'
@@ -13,7 +16,6 @@ function layoutReducer(state, action) {
   switch (action.type) {
     case 'ADD_DEVICE': {
       const newDevice = {
-        id: Math.random(),
         text: action.text,
         roomId: state.selectedRoomId,
       };
@@ -105,6 +107,18 @@ function layoutReducer(state, action) {
         view: state.rooms.length > 0 ? state.view : 'empty',
       };
 
+    case 'SET_DEVICES': 
+      return {
+        ...state,
+        devices: action.devices,
+      };
+
+    case 'SET_DEVICES_FAILED':
+      return {
+        ...state,
+        devices: [],
+      };
+
     default:
       return state;
   }
@@ -150,7 +164,18 @@ export function LayoutContextProvider({ children }) {
     },
     startAddRoom: () => dispatch({ type: 'START_ADD_ROOM' }),
     cancelAddRoom: () => dispatch({ type: 'CANCEL_ADD_ROOM' }),
-    selectRoom: (id) => dispatch({ type: 'SELECT_ROOM', id }),
+    selectRoom: async (id) => {
+      // 🔹 CHANGED
+      dispatch({ type: 'SELECT_ROOM', id });
+
+      try {
+        const devices = await getDevicesByRoom(id); // 🔹 NEW: fetch devices from backend
+        dispatch({ type: 'SET_DEVICES', devices }); // 🔹 NEW: update state
+      } catch (error) {
+        console.error('Failed to load devices for room:', error);
+        dispatch({ type: 'SET_DEVICES_FAILED' }); // 🔹 NEW
+      }
+    },
     selectMenu: (func, option) =>
       dispatch({ type: 'SELECT_MENU', func, option }),
   };

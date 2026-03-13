@@ -1,11 +1,8 @@
 using MyApi.Models;
 
-namespace MyApi.Services
+public interface IRoomService
 {
-    public interface IRoomService
-    {
-        Task<List<Room>> GetRoomsAsync();
-        Task<Room> AddRoomAsync(Room newRoom);
-        Task<bool> DeleteRoomAsync(Guid id);
-    }
+    Task<List<Room>> GetRoomsAsync();
+    Task<Room> AddRoomAsync(Room newRoom);
+    Task<bool> DeleteRoomAsync(Guid id);
 }
