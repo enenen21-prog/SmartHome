@@ -1,25 +1,17 @@
+import axios from 'axios';
+
 const BASE_URL = 'http://localhost:5201/api/rooms';
 
 export async function fetchRooms() {
-  const res = await fetch(`${BASE_URL}`);
-  if (!res.ok) throw new Error('Failed to fetch rooms');
-  return res.json();
+  const res = await axios.get(BASE_URL);
+  return res.data;
 }
 
 export async function createRoom(roomData) {
-
-  const res = await fetch(`${BASE_URL}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(roomData),
-  });
-  if (!res.ok) throw new Error('Failed to create room');
-  return res.json();
+  const res = await axios.post(BASE_URL, roomData);
+  return res.data;
 }
 
 export async function deleteRoomApi(id) {
-  const res = await fetch(`${BASE_URL}/${id}`, {
-    method: 'DELETE',
-  });
-  if (!res.ok) throw new Error('Failed to delete room');
+  await axios.delete(`${BASE_URL}/${id}`);
 }
