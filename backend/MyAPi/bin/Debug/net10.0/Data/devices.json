@@ -1,2 +1,27 @@
 [
+  {
+    "Id": "ed925ade-a7e3-43aa-9ac1-f1b98ab0d2ab",
+    "Name": "device1",
+    "RoomId": "8366a6cc-621b-4e81-8153-4d74347423d1"
+  },
+  {
+    "Id": "ec56cffc-164d-4502-bcb2-61e45293c652",
+    "Name": "device2",
+    "RoomId": "8366a6cc-621b-4e81-8153-4d74347423d1"
+  },
+  {
+    "Id": "397c48cd-c291-4d32-bb07-f26b7690bed3",
+    "Name": "device3",
+    "RoomId": "8366a6cc-621b-4e81-8153-4d74347423d1"
+  },
+  {
+    "Id": "2dbbff22-01b2-402f-b872-97280aba7753",
+    "Name": "device4",
+    "RoomId": "8366a6cc-621b-4e81-8153-4d74347423d1"
+  },
+  {
+    "Id": "43f44918-1326-4b63-b81a-7235fea66dd0",
+    "Name": "device5",
+    "RoomId": "8366a6cc-621b-4e81-8153-4d74347423d1"
+  }
 ]

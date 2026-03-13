@@ -1,2 +1,12 @@
 [
+  {
+    "Id": "8366a6cc-621b-4e81-8153-4d74347423d1",
+    "Title": "room1",
+    "Description": "room1_desc"
+  },
+  {
+    "Id": "d813d0bf-a479-4493-b06b-73f98d2d80ef",
+    "Title": "room2",
+    "Description": "room2_desc"
+  }
 ]

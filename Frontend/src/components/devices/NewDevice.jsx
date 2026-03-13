@@ -29,6 +29,7 @@ export default function NewDevice() {
           className="w-64 px-2 py-1 rounded-sm bg-stone-200"
           value={deviceName}
           onChange={(e) => setDeviceName(e.target.value)}
+          maxLength={32}
         />
 
         {!selectedRoomId && (
@@ -43,7 +44,7 @@ export default function NewDevice() {
         onClick={handleAddDevice}
         disabled={isDisabled}
       >
-        Add
+        + Add Device
       </Button>
     </div>
   );

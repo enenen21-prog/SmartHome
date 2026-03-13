@@ -23,5 +23,45 @@
     "Id": "43f44918-1326-4b63-b81a-7235fea66dd0",
     "Name": "device5",
     "RoomId": "8366a6cc-621b-4e81-8153-4d74347423d1"
+  },
+  {
+    "Id": "e8e37f14-9fe0-476e-b090-ff7beb0f1390",
+    "Name": "device6",
+    "RoomId": "8366a6cc-621b-4e81-8153-4d74347423d1"
+  },
+  {
+    "Id": "c53feb69-ba91-4619-b4fd-1629c2c9b018",
+    "Name": "device1",
+    "RoomId": "bd834dc1-de77-417a-a30e-f05dc11334a1"
+  },
+  {
+    "Id": "40709ad2-c062-4f19-8214-d8c7d96f1045",
+    "Name": "device2",
+    "RoomId": "bd834dc1-de77-417a-a30e-f05dc11334a1"
+  },
+  {
+    "Id": "58d7f3ed-09c6-4030-9b83-ba0738c745b8",
+    "Name": "device3",
+    "RoomId": "bd834dc1-de77-417a-a30e-f05dc11334a1"
+  },
+  {
+    "Id": "5e0ca023-3403-4e77-af56-3ece92ade898",
+    "Name": "asdasdasd",
+    "RoomId": "d8d7a600-105e-45cd-9543-acaab09fde01"
+  },
+  {
+    "Id": "ccc0bada-138f-49be-87a9-db57ad8efbd6",
+    "Name": "asdasdasd",
+    "RoomId": "d8d7a600-105e-45cd-9543-acaab09fde01"
+  },
+  {
+    "Id": "f357d09f-53ff-4514-b1e7-3729563aac1a",
+    "Name": "asdasd",
+    "RoomId": "68b3f1d0-2846-4fc9-b63f-68071444d225"
+  },
+  {
+    "Id": "61dcd3ea-e8ae-4010-b460-f049ad1bbea8",
+    "Name": "asdasdasd",
+    "RoomId": "68b3f1d0-2846-4fc9-b63f-68071444d225"
   }
 ]

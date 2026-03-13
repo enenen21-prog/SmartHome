@@ -108,6 +108,11 @@ function layoutReducer(state, action) {
         devices: [],
       };
 
+    case 'BACK_TO_ROOMS':
+      return state.rooms.length === 0
+        ? { ...state, view: 'empty', selectedRoomId: null }
+        : { ...state, view: 'list', selectedRoomId: null };
+
     default:
       return state;
   }

@@ -51,6 +51,7 @@ function createLayoutActions(state, dispatch) {
     },
     selectMenu: (func, option) =>
       dispatch({ type: 'SELECT_MENU', func, option }),
+    backToRooms: () => dispatch({ type: 'BACK_TO_ROOMS' }),
   };
 }
 
