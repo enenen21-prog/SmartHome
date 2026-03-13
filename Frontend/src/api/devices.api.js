@@ -24,3 +24,10 @@ export async function createDevice(deviceData) {
   if (!res.ok) throw new Error("Failed to create device");
   return res.json();
 }
+
+export async function deleteDeviceApi(id) {
+  const res = await fetch(`${API_BASE}/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Failed to delete device");
+}

@@ -45,4 +45,15 @@ public class DevicesController : ControllerBase
         var createdDevice = await _deviceService.AddDeviceAsync(newDevice);
         return CreatedAtAction(nameof(GetDevicesByRoomId), new { roomId = createdDevice.RoomId }, createdDevice);
     }
+
+    // DELETE: api/devices/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteDevice(Guid id)
+    {
+        var success = await _deviceService.DeleteDeviceAsync(id);
+        if (!success)
+            return NotFound(new { message = "Device not found" });
+
+        return NoContent();
+    }
 }

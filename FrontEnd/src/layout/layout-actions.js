@@ -1,5 +1,5 @@
 import { createRoom, deleteRoomApi } from '../api/rooms.api';
-import { getDevicesByRoom, createDevice } from '../api/devices.api';
+import { getDevicesByRoom, createDevice, deleteDeviceApi } from '../api/devices.api';
 
 function createLayoutActions(state, dispatch) {
   return {
@@ -19,7 +19,14 @@ function createLayoutActions(state, dispatch) {
         throw error;
       }
     },
-    deleteDevice: (id) => dispatch({ type: 'DELETE_DEVICE', id }),
+    deleteDevice: async (id) => {
+      try {
+        await deleteDeviceApi(id);
+        dispatch({ type: 'DELETE_DEVICE', id });
+      } catch (error) {
+        console.error('Failed to delete device:', error);
+      }
+    },
     addRoom: async (roomData) => {
       try {
         const createdRoom = await createRoom(roomData);

@@ -39,4 +39,15 @@ public class DeviceService : IDeviceService
         await WriteDevicesAsync(devices);
         return newDevice;
     }
+
+    public async Task<bool> DeleteDeviceAsync(Guid id)
+    {
+        var devices = await ReadDevicesAsync();
+        var device = devices.FirstOrDefault(d => d.Id == id);
+        if (device == null) return false;
+
+        devices.Remove(device);
+        await WriteDevicesAsync(devices);
+        return true;
+    }
 }

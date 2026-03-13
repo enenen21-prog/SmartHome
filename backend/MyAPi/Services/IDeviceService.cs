@@ -5,4 +5,5 @@ public interface IDeviceService
     Task<List<Device>> GetAllDevicesAsync();
     Task<List<Device>> GetDevicesByRoomIdAsync(Guid roomId);
     Task<Device> AddDeviceAsync(Device newDevice);
+    Task<bool> DeleteDeviceAsync(Guid id);
 }
