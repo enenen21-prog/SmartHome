@@ -19,17 +19,12 @@ namespace MyApi.Services
 
         public async Task<Room> AddRoomAsync(Room newRoom)
         {
-            if (newRoom.Id == Guid.Empty)
-            {
-                newRoom.Id = Guid.NewGuid();
-            }
-
             _db.Rooms.Add(newRoom);
             await _db.SaveChangesAsync();
             return newRoom;
         }
 
-        public async Task<bool> DeleteRoomAsync(Guid id)
+        public async Task<bool> DeleteRoomAsync(int id)
         {
             var room = await _db.Rooms.FirstOrDefaultAsync(r => r.Id == id);
             if (room == null) return false;

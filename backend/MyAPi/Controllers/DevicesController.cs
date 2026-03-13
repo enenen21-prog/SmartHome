@@ -17,7 +17,7 @@ public class DevicesController : ControllerBase
 
     // GET: api/devices/room/{roomId}
     [HttpGet("room/{roomId}")]
-    public async Task<ActionResult<List<Device>>> GetDevicesByRoomId(Guid roomId)
+    public async Task<ActionResult<List<Device>>> GetDevicesByRoomId(int roomId)
     {
         var devices = await _deviceService.GetDevicesByRoomIdAsync(roomId);
         return Ok(devices);
@@ -30,7 +30,7 @@ public class DevicesController : ControllerBase
         if (string.IsNullOrWhiteSpace(newDevice.Name))
             return BadRequest(new { message = "Name is required" });
 
-        if (newDevice.RoomId == Guid.Empty)
+        if (newDevice.RoomId <= 0)
             return BadRequest(new { message = "RoomId is required" });
 
         var createdDevice = await _deviceService.AddDeviceAsync(newDevice);
@@ -39,7 +39,7 @@ public class DevicesController : ControllerBase
 
     // DELETE: api/devices/{id}
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteDevice(Guid id)
+    public async Task<IActionResult> DeleteDevice(int id)
     {
         var success = await _deviceService.DeleteDeviceAsync(id);
         if (!success)

@@ -2,7 +2,7 @@ using MyApi.Models;
 
 public interface IDeviceService
 {
-    Task<List<Device>> GetDevicesByRoomIdAsync(Guid roomId);
+    Task<List<Device>> GetDevicesByRoomIdAsync(int roomId);
     Task<Device> AddDeviceAsync(Device newDevice);
-    Task<bool> DeleteDeviceAsync(Guid id);
+    Task<bool> DeleteDeviceAsync(int id);
 }

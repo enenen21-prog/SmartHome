@@ -52,7 +52,7 @@ public class RoomsController : ControllerBase
 
     // DELETE /api/Rooms/{id}
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRoom(Guid id)
+    public async Task<IActionResult> DeleteRoom(int id)
     {
         try
         {

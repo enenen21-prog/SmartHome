@@ -1,7 +1,7 @@
 namespace MyApi.Models;
 public class Device
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public required string Name { get; set; }
-    public Guid RoomId { get; set; } // connects to Room
+    public int RoomId { get; set; } // connects to Room
 }

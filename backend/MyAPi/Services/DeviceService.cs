@@ -10,7 +10,7 @@ public class DeviceService : IDeviceService
         _db = db;
     }
 
-    public async Task<List<Device>> GetDevicesByRoomIdAsync(Guid roomId)
+    public async Task<List<Device>> GetDevicesByRoomIdAsync(int roomId)
     {
         return await _db.Devices
             .AsNoTracking()
@@ -20,17 +20,12 @@ public class DeviceService : IDeviceService
 
     public async Task<Device> AddDeviceAsync(Device newDevice)
     {
-        if (newDevice.Id == Guid.Empty)
-        {
-            newDevice.Id = Guid.NewGuid();
-        }
-
         _db.Devices.Add(newDevice);
         await _db.SaveChangesAsync();
         return newDevice;
     }
 
-    public async Task<bool> DeleteDeviceAsync(Guid id)
+    public async Task<bool> DeleteDeviceAsync(int id)
     {
         var device = await _db.Devices.FirstOrDefaultAsync(d => d.Id == id);
         if (device == null) return false;

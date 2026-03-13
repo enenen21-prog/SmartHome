@@ -4,13 +4,14 @@ import { getDevicesByRoom, createDevice, deleteDeviceApi } from '../api/devices.
 function createLayoutActions(state, dispatch) {
   return {
     addDevice: async (name) => {
-      if (!state.selectedRoomId) {
+      const roomId = Number(state.selectedRoomId);
+      if (!Number.isFinite(roomId) || roomId <= 0) {
         throw new Error('No room selected');
       }
       try {
         const createdDevice = await createDevice({
           name,
-          roomId: state.selectedRoomId,
+          roomId,
         });
         dispatch({ type: 'ADD_DEVICE', device: createdDevice });
         return createdDevice;
@@ -46,10 +47,11 @@ function createLayoutActions(state, dispatch) {
     startAddRoom: () => dispatch({ type: 'START_ADD_ROOM' }),
     cancelAddRoom: () => dispatch({ type: 'CANCEL_ADD_ROOM' }),
     selectRoom: async (id) => {
-      dispatch({ type: 'SELECT_ROOM', id });
+      const roomId = Number(id);
+      dispatch({ type: 'SELECT_ROOM', id: roomId });
 
       try {
-        const devices = await getDevicesByRoom(id);
+        const devices = await getDevicesByRoom(roomId);
         dispatch({ type: 'SET_DEVICES', devices });
       } catch (error) {
         console.error('Failed to load devices for room:', error);
