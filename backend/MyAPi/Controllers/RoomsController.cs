@@ -22,12 +22,12 @@ public class RoomsController : ControllerBase
         try
         {
             var rooms = await _roomService.GetRoomsAsync();
-            return Ok(rooms);
+            return new ObjectResult(rooms) { StatusCode = 200 };
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine(ex);
-            return StatusCode(500, new { message = "Failed to fetch rooms" });
+            return new ObjectResult(new { message = "Failed to fetch rooms" }) { StatusCode = 500 };
         }
     }
 
@@ -36,17 +36,17 @@ public class RoomsController : ControllerBase
     public async Task<IActionResult> AddRoom([FromBody] Room newRoom)
     {
         if (string.IsNullOrEmpty(newRoom.Title))
-            return BadRequest(new { message = "Title is required" });
+            return new ObjectResult(new { message = "Title is required" }) { StatusCode = 400 };
 
         try
         {
             var createdRoom = await _roomService.AddRoomAsync(newRoom);
-            return CreatedAtAction(nameof(AddRoom), createdRoom);
+            return new ObjectResult(createdRoom) { StatusCode = 201 };
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine(ex);
-            return StatusCode(500, new { message = "Failed to create room" });
+            return new ObjectResult(new { message = "Failed to create room" }) { StatusCode = 500 };
         }
     }
 
@@ -59,14 +59,14 @@ public class RoomsController : ControllerBase
             var success = await _roomService.DeleteRoomAsync(id);
 
             if (!success)
-                return NotFound(new { message = "Room not found" });
+                return new ObjectResult(new { message = "Room not found" }) { StatusCode = 404 };
 
-            return NoContent(); // 204 success
+            return new StatusCodeResult(204); // 204 success
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine(ex);
-            return StatusCode(500, new { message = "Failed to delete room" });
+            return new ObjectResult(new { message = "Failed to delete room" }) { StatusCode = 500 };
         }
     }
 }
