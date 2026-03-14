@@ -12,6 +12,8 @@ export default function NewDevice() {
   const ipv4Regex =
     /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/;
   const isValidIpv4 = ipv4Regex.test(trimmedIp);
+  const shouldShowIpRequired = selectedRoomId && trimmedIp === '';
+  const shouldShowIpError = selectedRoomId && trimmedIp !== '' && !isValidIpv4;
   const isDisabled = !selectedRoomId || trimmedName === '' || !isValidIpv4;
 
   async function handleAddDevice() {
@@ -51,6 +53,7 @@ export default function NewDevice() {
                 value={deviceIp}
                 onChange={(e) => setDeviceIp(e.target.value)}
                 maxLength={15}
+                required
               />
             </label>
           </div>
@@ -61,7 +64,12 @@ export default function NewDevice() {
             Select a room to add devices
           </span>
         )}
-        {selectedRoomId && trimmedIp !== '' && !isValidIpv4 && (
+        {shouldShowIpRequired && (
+          <span className="text-xs text-red-600 mt-1">
+            IPv4 address is required
+          </span>
+        )}
+        {shouldShowIpError && (
           <span className="text-xs text-red-600 mt-1">
             Enter a valid IPv4 address
           </span>

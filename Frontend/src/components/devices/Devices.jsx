@@ -44,7 +44,13 @@ export default function Devices() {
               key={device.id}
               className="flex justify-between px-3 py-3 border-b border-stone-200 last:border-b-0 transition-colors hover:bg-stone-200"
             >
-              <span>{device.name}</span>
+              <span className="text-stone-800">
+                <span className="font-semibold">{device.name}</span>
+                <span className="mx-2 text-stone-400">·</span>
+                <span className="text-sm text-stone-500">
+                  {device.ipv4Address}
+                </span>
+              </span>
               <button
                 className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
                 onClick={() => handleDeleteClick(device.id)}
