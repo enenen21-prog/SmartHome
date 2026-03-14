@@ -3,7 +3,7 @@ import { getDevicesByRoom, createDevice, deleteDeviceApi } from '../api/devices.
 
 function createLayoutActions(state, dispatch) {
   return {
-    addDevice: async (name) => {
+    addDevice: async (name, ipv4Address) => {
       const roomId = Number(state.selectedRoomId);
       if (!Number.isFinite(roomId) || roomId <= 0) {
         throw new Error('No room selected');
@@ -11,6 +11,7 @@ function createLayoutActions(state, dispatch) {
       try {
         const createdDevice = await createDevice({
           name,
+          ipv4Address,
           roomId,
         });
         dispatch({ type: 'ADD_DEVICE', device: createdDevice });

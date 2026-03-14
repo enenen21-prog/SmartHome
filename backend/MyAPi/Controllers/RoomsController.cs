@@ -61,7 +61,7 @@ public class RoomsController : ControllerBase
             if (!success)
                 return new ObjectResult(new { message = "Room not found" }) { StatusCode = 404 };
 
-            return new StatusCodeResult(204); // 204 success
+            return new StatusCodeResult(204);
         }
         catch (Exception ex)
         {

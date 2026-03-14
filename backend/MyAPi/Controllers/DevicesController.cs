@@ -20,7 +20,7 @@ public class DevicesController : ControllerBase
     public async Task<ActionResult<List<Device>>> GetDevicesByRoomId(int roomId)
     {
         var devices = await _deviceService.GetDevicesByRoomIdAsync(roomId);
-        return Ok(devices);
+        return new ObjectResult(devices) { StatusCode = 200 };
     }
 
     // POST: api/devices
@@ -28,13 +28,16 @@ public class DevicesController : ControllerBase
     public async Task<ActionResult<Device>> AddDevice([FromBody] Device newDevice)
     {
         if (string.IsNullOrWhiteSpace(newDevice.Name))
-            return BadRequest(new { message = "Name is required" });
+            return new ObjectResult(new { message = "Name is required" }) { StatusCode = 400 };
+
+        if (string.IsNullOrWhiteSpace(newDevice.Ipv4Address))
+            return new ObjectResult(new { message = "IPv4 address is required" }) { StatusCode = 400 };
 
         if (newDevice.RoomId <= 0)
-            return BadRequest(new { message = "RoomId is required" });
+            return new ObjectResult(new { message = "RoomId is required" }) { StatusCode = 400 };
 
         var createdDevice = await _deviceService.AddDeviceAsync(newDevice);
-        return CreatedAtAction(nameof(GetDevicesByRoomId), new { roomId = createdDevice.RoomId }, createdDevice);
+        return new ObjectResult(createdDevice) { StatusCode = 201 };
     }
 
     // DELETE: api/devices/{id}
@@ -43,8 +46,8 @@ public class DevicesController : ControllerBase
     {
         var success = await _deviceService.DeleteDeviceAsync(id);
         if (!success)
-            return NotFound(new { message = "Device not found" });
+            return new ObjectResult(new { message = "Device not found" }) { StatusCode = 404 };
 
-        return NoContent();
+        return new StatusCodeResult(204);
     }
 }
