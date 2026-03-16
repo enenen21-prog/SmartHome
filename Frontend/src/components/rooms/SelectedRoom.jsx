@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { LayoutContext } from '../../layout/layout-context.jsx';
 
 import Devices from '../devices/Devices.jsx';
+import BackButton from '../BackButton.jsx';
 
 export default function SelectedRoom() {
   const {
@@ -17,12 +18,7 @@ export default function SelectedRoom() {
     <div className="w-[35rem] space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-stone-700">Manage Room</h2>
-        <button
-          className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
-          onClick={backToRooms}
-        >
-          Back
-        </button>
+        <BackButton onClick={backToRooms} />
       </div>
       <header className="p-4 rounded-lg bg-white border border-stone-200 shadow-sm">
         <div className="flex items-start justify-between">

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import BackButton from '../BackButton.jsx';
 
 const TIME_RANGES = [
   { id: 'last-hour', label: 'Last hour' },
@@ -13,13 +14,7 @@ export default function ViewData({ onBack }) {
     <section className="space-y-6">
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-stone-700">Measurements</h1>
-        <button
-          type="button"
-          className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 hover:bg-stone-300"
-          onClick={onBack}
-        >
-          Back
-        </button>
+        <BackButton onClick={onBack} />
       </div>
       <div className="grid grid-cols-1 gap-4 max-w-xl">
         <label className="flex flex-col gap-2">

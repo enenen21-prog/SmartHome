@@ -4,6 +4,7 @@ import { LayoutContext } from '../../layout/layout-context.jsx';
 import Input from '../Input';
 import Modal from '../Modal';
 import Button from '../Button';
+import BackButton from '../BackButton.jsx';
 
 export default function NewRoom() {
   const modal = useRef();
@@ -43,12 +44,7 @@ export default function NewRoom() {
         </h2>
         <menu className="flex items-center justify-end gap-4">
           <li>
-            <button
-              className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
-              onClick={cancelAddRoom}
-            >
-              Back
-            </button>
+            <BackButton onClick={cancelAddRoom} />
           </li>
           <li>
             <button
