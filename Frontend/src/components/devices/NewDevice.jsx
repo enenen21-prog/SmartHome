@@ -38,7 +38,7 @@ export default function NewDevice() {
               <input
                 type="text"
                 placeholder="Kitchen Light"
-                className="mt-1 w-full rounded-md bg-stone-200 px-3 py-2 text-sm text-stone-900 outline-none ring-1 ring-transparent transition focus:ring-stone-400"
+                className="mt-1 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 outline-none transition focus:border-stone-600"
                 value={deviceName}
                 onChange={(e) => setDeviceName(e.target.value)}
                 maxLength={32}
@@ -49,7 +49,7 @@ export default function NewDevice() {
               <input
                 type="text"
                 placeholder="192.168.1.10"
-                className="mt-1 w-full rounded-md bg-stone-200 px-3 py-2 text-sm text-stone-900 outline-none ring-1 ring-transparent transition focus:ring-stone-400"
+                className="mt-1 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 outline-none transition focus:border-stone-600"
                 value={deviceIp}
                 onChange={(e) => setDeviceIp(e.target.value)}
                 maxLength={15}

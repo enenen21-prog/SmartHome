@@ -38,24 +38,9 @@ export default function NewRoom() {
         <h2 className="text-xl font-bold text-stone-700 my-4">Invalid input</h2>
         <p className="text-stone-600 mb-4">Please enter all fields.</p>
       </Modal>
-      <div className="w-[35rem] space-y-4">
-        <h2 className="text-2xl font-bold text-stone-700">
-          Create a New Room
-        </h2>
-        <menu className="flex items-center justify-end gap-4">
-          <li>
-            <BackButton onClick={cancelAddRoom} />
-          </li>
-          <li>
-            <button
-              className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-          </li>
-        </menu>
-        <div>
+      <section className="space-y-6">
+        <h1 className="text-2xl font-bold text-stone-700">Create a New Room</h1>
+        <div className="grid grid-cols-1 gap-4 max-w-xl">
           <Input type="text" ref={title} label="Title" maxLength={16} />
           <Input
             type="text"
@@ -64,8 +49,17 @@ export default function NewRoom() {
             textarea
             maxLength={32}
           />
+          <div className="flex items-center gap-3">
+            <BackButton onClick={cancelAddRoom} />
+            <button
+              className="px-4 py-2 rounded-md bg-stone-800 text-stone-100 hover:bg-stone-700"
+              onClick={handleSave}
+            >
+              Save
+            </button>
+          </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }
