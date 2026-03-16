@@ -7,6 +7,7 @@ public class SmartHomeDbContext : DbContext
     // DbSets for Rooms and Devices
     public DbSet<Room> Rooms { get; set; }
     public DbSet<Device> Devices { get; set; }
+    public DbSet<Sample> Samples { get; set; }
 
     public SmartHomeDbContext() { }
     public SmartHomeDbContext(DbContextOptions<SmartHomeDbContext> options) : base(options) { }

@@ -23,6 +23,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
+builder.Services.AddScoped<ISampleService, SampleService>();
 
 var app = builder.Build();
 
