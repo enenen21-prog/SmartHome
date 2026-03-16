@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import MenuSidebar from './components/MenuSidebar.jsx';
 import Dashboard from './components/dashboard/Dashboard.jsx';
-import Measurements from './components/measurements/Measurements.jsx';
+import ViewData from './components/view-data/ViewData.jsx';
 import RoomsPage from './components/rooms/RoomsPage.jsx';
 import Alerts from './components/Alerts.jsx';
 import { LayoutContextProvider } from './layout/layout-context.jsx';
@@ -15,12 +15,10 @@ function AppContent() {
         return <RoomsPage />;
       case 'alerts':
         return <Alerts />;
-      case 'measurements':
-        return <Measurements />;
+      case 'view-data':
+        return <ViewData onBack={() => setActiveOption('dashboard')} />;
       default:
-        return (
-          <Dashboard onViewData={() => setActiveOption('measurements')} />
-        );
+        return <Dashboard onViewData={() => setActiveOption('view-data')} />;
     }
   }
 
