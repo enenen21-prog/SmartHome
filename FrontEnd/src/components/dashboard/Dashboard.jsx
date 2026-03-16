@@ -4,36 +4,43 @@ import { getDevicesByRoom } from '../../api/devices.api.js';
 import RoomSelect from './RoomSelect.jsx';
 import DeviceSelect from './DeviceSelect.jsx';
 
-export default function Dashboard({ onViewData }) {
+export default function Dashboard({
+  onViewData,
+  selectedRoomId,
+  selectedDeviceId,
+  onRoomChange,
+  onDeviceChange,
+}) {
   const { rooms, isLoadingRooms } = useContext(LayoutContext);
-  const [selectedRoomId, setSelectedRoomId] = useState(null);
   const [devices, setDevices] = useState([]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
   const [isLoadingDevices, setIsLoadingDevices] = useState(false);
 
   useEffect(() => {
     if (selectedRoomId || rooms.length === 0) return;
-    setSelectedRoomId(rooms[0].id);
-  }, [rooms, selectedRoomId]);
+    onRoomChange(rooms[0].id);
+  }, [rooms, selectedRoomId, onRoomChange]);
 
   useEffect(() => {
     async function loadDevices() {
       if (!selectedRoomId) {
         setDevices([]);
-        setSelectedDeviceId(null);
+        onDeviceChange(null);
         return;
       }
       setIsLoadingDevices(true);
       try {
         const roomDevices = await getDevicesByRoom(selectedRoomId);
         setDevices(roomDevices);
-        setSelectedDeviceId(roomDevices.length > 0 ? roomDevices[0].id : null);
+        const nextId = roomDevices.length > 0 ? roomDevices[0].id : null;
+        if (!roomDevices.some((d) => d.id === selectedDeviceId)) {
+          onDeviceChange(nextId);
+        }
       } finally {
         setIsLoadingDevices(false);
       }
     }
     loadDevices();
-  }, [selectedRoomId]);
+  }, [selectedRoomId, selectedDeviceId, onDeviceChange]);
 
   const deviceSelectDisabled =
     !selectedRoomId || isLoadingDevices || devices.length === 0;
@@ -50,15 +57,13 @@ export default function Dashboard({ onViewData }) {
         <RoomSelect
           rooms={rooms}
           value={selectedRoomId}
-          onChange={(e) => setSelectedRoomId(Number(e.target.value) || null)}
+          onChange={(e) => onRoomChange(Number(e.target.value) || null)}
           disabled={isLoadingRooms || rooms.length === 0}
         />
         <DeviceSelect
           devices={devices}
           value={selectedDeviceId}
-          onChange={(e) =>
-            setSelectedDeviceId(Number(e.target.value) || null)
-          }
+          onChange={(e) => onDeviceChange(Number(e.target.value) || null)}
           disabled={deviceSelectDisabled}
           placeholder={devicePlaceholder}
         />

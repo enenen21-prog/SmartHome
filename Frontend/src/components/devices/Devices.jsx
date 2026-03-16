@@ -22,7 +22,7 @@ export default function Devices() {
   }
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-6">
       <ConfirmModal
         ref={confirmRef}
         title="Delete Device"
@@ -30,7 +30,10 @@ export default function Devices() {
         confirmLabel="Delete"
         onConfirm={handleConfirmDelete}
       />
-      <h2 className="text-2xl font-bold text-stone-700">Devices</h2>
+      <div>
+        <h2 className="text-2xl font-bold text-stone-700">Devices</h2>
+        <p className="text-sm text-stone-500">Devices in this room.</p>
+      </div>
       <NewDevice />
       {roomDevices.length === 0 && (
         <p className="text-stone-800 my-4">
@@ -38,21 +41,22 @@ export default function Devices() {
         </p>
       )}
       {roomDevices.length > 0 && (
-        <ul className="rounded-lg bg-stone-100 border border-stone-200 shadow-sm">
+        <ul className="rounded-xl bg-white border border-stone-200 shadow-sm divide-y divide-stone-200">
           {roomDevices.map((device) => (
             <li
               key={device.id}
-              className="flex justify-between px-3 py-3 border-b border-stone-200 last:border-b-0 transition-colors hover:bg-stone-200"
+              className="group flex items-center justify-between px-4 py-4 transition-colors hover:bg-stone-50"
             >
-              <span className="text-stone-800">
-                <span className="font-semibold">{device.name}</span>
-                <span className="mx-2 text-stone-400">·</span>
+              <div className="flex flex-col">
+                <span className="text-stone-800 font-medium">
+                  {device.name}
+                </span>
                 <span className="text-sm text-stone-500">
                   {device.ipv4Address}
                 </span>
-              </span>
+              </div>
               <button
-                className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
+                className="px-3 py-1 rounded-md bg-stone-100 border border-stone-300 text-stone-800 transition hover:bg-stone-200"
                 onClick={() => handleDeleteClick(device.id)}
               >
                 Delete
@@ -64,3 +68,4 @@ export default function Devices() {
     </section>
   );
 }
+

@@ -36,6 +36,6 @@ app.UseCors("AllowReactDev");
 app.MapControllers();
 
 /* TEST */
-//await SampleDbTest.RunAsync();
+await SampleDbTest.RunAsync();
 
 app.Run();

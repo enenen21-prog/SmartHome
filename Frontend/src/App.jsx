@@ -8,6 +8,8 @@ import { LayoutContextProvider } from './layout/layout-context.jsx';
 
 function AppContent() {
   const [activeOption, setActiveOption] = useState('rooms');
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
 
   function renderContent() {
     switch (activeOption) {
@@ -16,9 +18,23 @@ function AppContent() {
       case 'alerts':
         return <Alerts />;
       case 'view-data':
-        return <ViewData onBack={() => setActiveOption('dashboard')} />;
+        return (
+          <ViewData
+            onBack={() => setActiveOption('dashboard')}
+            roomId={selectedRoomId}
+            deviceId={selectedDeviceId}
+          />
+        );
       default:
-        return <Dashboard onViewData={() => setActiveOption('view-data')} />;
+        return (
+          <Dashboard
+            selectedRoomId={selectedRoomId}
+            selectedDeviceId={selectedDeviceId}
+            onRoomChange={setSelectedRoomId}
+            onDeviceChange={setSelectedDeviceId}
+            onViewData={() => setActiveOption('view-data')}
+          />
+        );
     }
   }
 

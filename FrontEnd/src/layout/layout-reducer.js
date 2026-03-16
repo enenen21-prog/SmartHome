@@ -73,7 +73,6 @@ function layoutReducer(state, action) {
       };
 
     case 'SELECT_MENU':
-      action.func(action.option);
       if (action.option !== 'rooms') return state;
 
       return state.rooms.length === 0

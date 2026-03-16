@@ -59,8 +59,10 @@ function createLayoutActions(state, dispatch) {
         dispatch({ type: 'SET_DEVICES_FAILED' });
       }
     },
-    selectMenu: (func, option) =>
-      dispatch({ type: 'SELECT_MENU', func, option }),
+    selectMenu: (func, option) => {
+      func(option);
+      dispatch({ type: 'SELECT_MENU', option });
+    },
     backToRooms: () => dispatch({ type: 'BACK_TO_ROOMS' }),
   };
 }

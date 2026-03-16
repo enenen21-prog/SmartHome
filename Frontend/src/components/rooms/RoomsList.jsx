@@ -22,7 +22,7 @@ export default function RoomsList() {
   }
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-6">
       <ConfirmModal
         ref={confirmRef}
         title="Delete Room"
@@ -31,25 +31,32 @@ export default function RoomsList() {
         onConfirm={handleConfirmDelete}
       />
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-stone-700">Rooms List</h2>
+        <div>
+          <h2 className="text-2xl font-bold text-stone-700">Rooms</h2>
+          <p className="text-sm text-stone-500">
+            Manage rooms and assign devices.
+          </p>
+        </div>
         <Button onClick={startAddRoom}>+ Add Room</Button>
       </div>
-      <ul className="rounded-lg bg-stone-100 border border-stone-200 shadow-sm">
+      <ul className="rounded-xl bg-white border border-stone-200 shadow-sm divide-y divide-stone-200">
         {rooms.map((room) => (
           <li
             key={room.id}
-            className="flex justify-between items-center px-3 py-3 border-b border-stone-200 last:border-b-0 transition-colors hover:bg-stone-200"
+            className="group flex items-center justify-between px-4 py-4 transition-colors hover:bg-stone-50"
           >
-            <span>{room.title}</span>
+            <div className="flex items-center gap-3">
+              <span className="text-stone-800 font-medium">{room.title}</span>
+            </div>
             <div className="flex gap-2">
               <button
-                className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
+                className="px-3 py-1 rounded-md bg-stone-100 border border-stone-300 text-stone-800 transition hover:bg-stone-200"
                 onClick={() => selectRoom(room.id)}
               >
-                Edit
+                Details
               </button>
               <button
-                className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
+                className="px-3 py-1 rounded-md bg-stone-100 border border-stone-300 text-stone-800 transition hover:bg-stone-200"
                 onClick={() => handleDeleteClick(room.id)}
               >
                 Delete
