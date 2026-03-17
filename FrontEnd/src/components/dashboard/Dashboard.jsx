@@ -52,7 +52,7 @@ export default function Dashboard({
 
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-bold text-stone-700">Dashboard</h1>
+      <h1 className="text-2xl font-semibold text-slate-100">Dashboard</h1>
       <div className="grid grid-cols-1 gap-4 max-w-xl">
         <RoomSelect
           rooms={rooms}
@@ -69,7 +69,7 @@ export default function Dashboard({
         />
         <button
           type="button"
-          className="mt-2 w-fit px-4 py-2 rounded-md bg-stone-800 text-stone-100 hover:bg-stone-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-2 w-fit px-4 py-2 rounded-xl bg-white/10 border border-white/10 text-slate-100 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={onViewData}
           disabled={!selectedDeviceId}
         >

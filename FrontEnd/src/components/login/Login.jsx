@@ -1,10 +1,6 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 import AuthInputs from './AuthInputs.jsx';
 import Header from './Header.jsx';
-
-const GlobalLoginStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-`;
 
 const LoginShell = styled.section`
   min-height: 100vh;
@@ -88,7 +84,6 @@ const LoginShell = styled.section`
 export default function Login({ onLogin, error }) {
   return (
     <LoginShell>
-      <GlobalLoginStyle />
       <div className="shell-inner">
         <Header />
         <h2 className="title">Sign in to your account</h2>

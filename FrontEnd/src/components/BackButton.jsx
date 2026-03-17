@@ -1,7 +1,7 @@
 export default function BackButton({ onClick, className = '', children }) {
   const label = children ?? 'Back';
   const baseClasses =
-    'px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300';
+    'px-3 py-1 rounded-xl bg-white/10 border border-white/10 text-slate-100 transition hover:bg-white/20';
 
   return (
     <button className={`${baseClasses} ${className}`.trim()} onClick={onClick}>

@@ -31,25 +31,25 @@ export default function NewDevice() {
   return (
     <div className="flex items-center gap-4">
       <div className="flex flex-col">
-        <div className="rounded-lg border border-stone-200 bg-gradient-to-b from-stone-100 to-stone-50 p-3 shadow-sm">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-3 shadow-[0_20px_40px_rgba(15,23,42,0.25)]">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <label className="text-xs font-semibold text-stone-600">
+            <label className="text-xs font-semibold text-slate-300">
               Device name
               <input
                 type="text"
                 placeholder="Kitchen Light"
-                className="mt-1 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 outline-none transition focus:border-stone-600"
+                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30"
                 value={deviceName}
                 onChange={(e) => setDeviceName(e.target.value)}
                 maxLength={32}
               />
             </label>
-            <label className="text-xs font-semibold text-stone-600">
+            <label className="text-xs font-semibold text-slate-300">
               IPv4 address
               <input
                 type="text"
                 placeholder="192.168.1.10"
-                className="mt-1 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 outline-none transition focus:border-stone-600"
+                className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30"
                 value={deviceIp}
                 onChange={(e) => setDeviceIp(e.target.value)}
                 maxLength={15}
@@ -60,17 +60,17 @@ export default function NewDevice() {
         </div>
 
         {!selectedRoomId && (
-          <span className="text-xs text-stone-500 mt-1">
+          <span className="text-xs text-slate-400 mt-1">
             Select a room to add devices
           </span>
         )}
         {shouldShowIpRequired && (
-          <span className="text-xs text-red-600 mt-1">
+          <span className="text-xs text-red-300 mt-1">
             IPv4 address is required
           </span>
         )}
         {shouldShowIpError && (
-          <span className="text-xs text-red-600 mt-1">
+          <span className="text-xs text-red-300 mt-1">
             Enter a valid IPv4 address
           </span>
         )}
@@ -79,7 +79,6 @@ export default function NewDevice() {
       <Button
         type="button"
         onClick={handleAddDevice}
-        disabled={isDisabled}
       >
         + Add Device
       </Button>

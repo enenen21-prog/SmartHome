@@ -9,7 +9,7 @@ import {
 } from 'recharts';
 
 const chartMargin = { top: 8, right: 12, left: 0, bottom: 8 };
-const axisTickStyle = { fontSize: 10, fill: '#78716c' };
+const axisTickStyle = { fontSize: 10, fill: '#94a3b8' };
 
 const SERIES = {
   temperature: { stroke: '#0f766e', fill: '#99f6e4' },
@@ -22,10 +22,10 @@ export default function ChartCard({ title, dataKey, data }) {
   const colors = SERIES[dataKey] ?? { stroke: '#1c1917', fill: '#e7e5e4' };
   const gradientId = `grad-${dataKey}`;
   return (
-    <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_20px_40px_rgba(15,23,42,0.25)]">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-sm font-semibold text-stone-700">{title}</h2>
-        <span className="text-xs text-stone-400">Last 24h</span>
+        <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
+        <span className="text-xs text-slate-400">Last 24h</span>
       </div>
       <div className="h-56">
         <ResponsiveContainer width="100%" height="100%">
@@ -36,16 +36,16 @@ export default function ChartCard({ title, dataKey, data }) {
                 <stop offset="95%" stopColor={colors.fill} stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 6" stroke="#e7e5e4" />
+            <CartesianGrid strokeDasharray="3 6" stroke="#1f2937" />
             <XAxis dataKey="time" tick={axisTickStyle} />
             <YAxis tick={axisTickStyle} />
             <Tooltip
               contentStyle={{
                 borderRadius: '0.5rem',
-                borderColor: '#e7e5e4',
-                background: '#ffffff',
+                borderColor: 'rgba(148,163,184,0.35)',
+                background: 'rgba(15,23,42,0.95)',
               }}
-              labelStyle={{ color: '#44403c' }}
+              labelStyle={{ color: '#e2e8f0' }}
             />
             <Area
               type="monotone"

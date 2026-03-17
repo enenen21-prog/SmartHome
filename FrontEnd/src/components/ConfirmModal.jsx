@@ -36,19 +36,19 @@ const ConfirmModal = forwardRef(function ConfirmModal(
   return createPortal(
     <dialog
       ref={dialog}
-      className="backdrop:bg-stone-900/90 p-4 rounded-md shadow-md"
+      className="backdrop:bg-slate-950/90 p-6 rounded-2xl bg-white/10 border border-white/10 text-slate-100 shadow-[0_20px_60px_rgba(15,23,42,0.6)]"
     >
-      <h2 className="text-xl font-bold text-stone-700">{title}</h2>
-      <p className="text-stone-600 mt-2">{message}</p>
+      <h2 className="text-xl font-semibold text-slate-100">{title}</h2>
+      <p className="text-slate-300 mt-2">{message}</p>
       <div className="mt-4 flex justify-end gap-2">
         <button
-          className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
+          className="px-3 py-1 rounded-xl bg-white/10 border border-white/10 text-slate-100 transition hover:bg-white/20"
           onClick={handleCancel}
         >
           {cancelLabel}
         </button>
         <button
-          className="px-3 py-1 rounded-md bg-stone-200 border border-stone-300 text-stone-800 transition hover:bg-stone-300"
+          className="px-3 py-1 rounded-xl bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 text-white shadow-[0_10px_25px_rgba(79,70,229,0.35)]"
           onClick={handleConfirm}
         >
           {confirmLabel}

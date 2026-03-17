@@ -31,33 +31,33 @@ export default function Devices({ role }) {
         onConfirm={handleConfirmDelete}
       />
       <div>
-        <h2 className="text-2xl font-bold text-stone-700">Devices</h2>
-        <p className="text-sm text-stone-500">Devices in this room.</p>
+        <h2 className="text-2xl font-semibold text-slate-100">Devices</h2>
+        <p className="text-sm text-slate-400">Devices in this room.</p>
       </div>
       {role === 'admin' ? <NewDevice /> : null}
       {roomDevices.length === 0 && (
-        <p className="text-stone-800 my-4">
+        <p className="text-slate-200 my-4">
           This room does not have any devices yet
         </p>
       )}
       {roomDevices.length > 0 && (
-        <ul className="rounded-xl bg-white border border-stone-200 shadow-sm divide-y divide-stone-200">
+        <ul className="rounded-2xl bg-white/5 border border-white/10 shadow-[0_20px_40px_rgba(15,23,42,0.25)] divide-y divide-white/10">
           {roomDevices.map((device) => (
             <li
               key={device.id}
-              className="group flex items-center justify-between px-4 py-4 transition-colors hover:bg-stone-50"
+              className="group flex items-center justify-between px-4 py-4 transition-colors hover:bg-white/5"
             >
               <div className="flex flex-col">
-                <span className="text-stone-800 font-medium">
+                <span className="text-slate-100 font-medium">
                   {device.name}
                 </span>
-                <span className="text-sm text-stone-500">
+                <span className="text-sm text-slate-400">
                   {device.ipv4Address}
                 </span>
               </div>
               {role === 'admin' ? (
                 <button
-                  className="px-3 py-1 rounded-md bg-stone-100 border border-stone-300 text-stone-800 transition hover:bg-stone-200"
+                  className="px-3 py-1 rounded-xl bg-white/10 border border-white/10 text-slate-100 transition hover:bg-white/20"
                   onClick={() => handleDeleteClick(device.id)}
                 >
                   Delete

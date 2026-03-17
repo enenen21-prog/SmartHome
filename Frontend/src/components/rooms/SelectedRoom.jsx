@@ -15,27 +15,27 @@ export default function SelectedRoom({ role }) {
   if (!selectedRoom) return null;
 
   return (
-    <div className="w-[35rem] space-y-4">
+    <div className="w-full space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-stone-700">Manage Room</h2>
+        <h2 className="text-2xl font-semibold text-slate-100">Manage Room</h2>
         <BackButton onClick={backToRooms} />
       </div>
-      <header className="p-4 rounded-lg bg-white border border-stone-200 shadow-sm">
+      <header className="p-4 rounded-2xl bg-white/5 border border-white/10 shadow-[0_20px_40px_rgba(15,23,42,0.25)]">
         <div className="flex items-start justify-between">
           <div className="mb-2">
-            <span className="text-xs uppercase tracking-wide text-stone-400">
+            <span className="text-xs uppercase tracking-wide text-slate-400">
               Name
             </span>
-            <h1 className="text-2xl font-semibold text-stone-800">
+            <h1 className="text-2xl font-semibold text-slate-100">
               {selectedRoom.title}
             </h1>
           </div>
         </div>
         <div>
-          <span className="text-xs uppercase tracking-wide text-stone-400">
+          <span className="text-xs uppercase tracking-wide text-slate-400">
             Description
           </span>
-          <p className="text-stone-600 whitespace-pre-wrap leading-relaxed">
+          <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">
             {selectedRoom.description}
           </p>
         </div>

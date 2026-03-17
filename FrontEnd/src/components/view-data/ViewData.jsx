@@ -53,7 +53,7 @@ export default function ViewData({ onBack, roomId, deviceId }) {
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-stone-700">Measurements</h1>
+        <h1 className="text-2xl font-semibold text-slate-100">Measurements</h1>
         <BackButton onClick={onBack} />
       </div>
       <div className="grid grid-cols-1 gap-4 max-w-xl">
@@ -64,15 +64,15 @@ export default function ViewData({ onBack, roomId, deviceId }) {
         />
       </div>
       {selectionMissing ? (
-        <p className="text-stone-600">
+        <p className="text-slate-300">
           Select a room and device in the Dashboard first.
         </p>
       ) : null}
-      {error ? <p className="text-red-600">{error}</p> : null}
+      {error ? <p className="text-red-300">{error}</p> : null}
       {isLoading ? (
-        <p className="text-stone-600">Loading samples...</p>
+        <p className="text-slate-300">Loading samples...</p>
       ) : chartData.length === 0 ? (
-        <p className="text-stone-600">No samples for this range.</p>
+        <p className="text-slate-300">No samples for this range.</p>
       ) : (
         <ChartsGrid data={chartData} />
       )}

@@ -15,19 +15,21 @@ export default function MenuSidebar({
 }) {
   const { selectMenu } = useContext(LayoutContext);
   return (
-    <aside className="w-1/4 px-6 py-16 bg-stone-900 text-stone-50 md:w-56 rounded-r-xl">
-      <h2 className="mb-8 font-bold md:text-xl text-stone-200">SmartHome</h2>
+    <aside className="w-1/4 px-6 py-12 bg-white/5 border border-white/10 text-slate-100 md:w-64 rounded-2xl backdrop-blur-xl shadow-[0_24px_50px_rgba(15,23,42,0.35)]">
+      <h2 className="mb-6 font-semibold md:text-xl tracking-wide text-slate-100">
+        SmartHome
+      </h2>
       {userEmail ? (
-        <p className="text-xs text-stone-400 mb-6 truncate">{userEmail}</p>
+        <p className="text-xs text-slate-400 mb-6 truncate">{userEmail}</p>
       ) : null}
       <ul className="mt-8">
         {MENU_ITEMS.map((item) => {
           let cssClasses =
-            'w-full text-left px-2 py-1 rounded-sm  hover:text-stone-200 hover:bg-stone-800';
+            'w-full text-left px-3 py-2 rounded-lg transition hover:text-slate-100 hover:bg-white/10';
           cssClasses +=
             item.id === activeOption
-              ? ' bg-stone-800 text-stone-200'
-              : ' text-stone-400';
+              ? ' bg-white/10 text-slate-100'
+              : ' text-slate-400';
 
           return (
             <li key={item.id}>
@@ -39,7 +41,7 @@ export default function MenuSidebar({
         })}
       </ul>
       <button
-        className="mt-10 w-full rounded-md border border-stone-700 bg-stone-800 px-3 py-2 text-sm text-stone-200 hover:bg-stone-700"
+        className="mt-10 w-full rounded-xl border border-white/10 bg-white/10 px-3 py-2 text-sm text-slate-100 hover:bg-white/20"
         onClick={onLogout}
       >
         Logout

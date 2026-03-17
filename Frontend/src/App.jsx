@@ -70,7 +70,7 @@ function AppContent() {
       {!isLoggedIn ? (
         <Login onLogin={handleLogin} error={loginError} />
       ) : (
-        <main className="h-screen flex gap-8 my-8">
+        <main className="min-h-screen flex gap-6 px-6 py-8">
           {/* Sidebar */}
           <MenuSidebar
             activeOption={activeOption}
@@ -80,7 +80,7 @@ function AppContent() {
           />
 
           {/* Page content */}
-          <div className="flex-1 p-6 bg-stone-100 rounded-xl">
+          <div className="flex-1 p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-xl shadow-[0_30px_60px_rgba(15,23,42,0.35)]">
             {renderContent()}
           </div>
         </main>
