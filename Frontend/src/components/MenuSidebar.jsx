@@ -1,7 +1,5 @@
 import { useContext } from 'react';
 import { LayoutContext } from '../layout/layout-context.jsx';
-import Button from './Button';
-
 const MENU_ITEMS = [
   { id: 'rooms', label: 'Rooms' },
   { id: 'dashboard', label: 'Dashboard' },
@@ -12,9 +10,8 @@ const MENU_ITEMS = [
 export default function MenuSidebar({
   activeOption,
   onSelectOption,
-  role,
-  onRoleChange,
   userEmail,
+  onLogout,
 }) {
   const { selectMenu } = useContext(LayoutContext);
   return (
@@ -41,19 +38,12 @@ export default function MenuSidebar({
           );
         })}
       </ul>
-      <div className="mt-10">
-        <label className="text-xs uppercase tracking-wide text-stone-400">
-          Role
-        </label>
-        <select
-          className="mt-2 w-full rounded-md bg-stone-800 border border-stone-700 px-2 py-1 text-sm text-stone-200"
-          value={role}
-          onChange={(e) => onRoleChange(e.target.value)}
-        >
-          <option value="admin">Admin</option>
-          <option value="reader">Viewer</option>
-        </select>
-      </div>
+      <button
+        className="mt-10 w-full rounded-md border border-stone-700 bg-stone-800 px-3 py-2 text-sm text-stone-200 hover:bg-stone-700"
+        onClick={onLogout}
+      >
+        Logout
+      </button>
     </aside>
   );
 }
