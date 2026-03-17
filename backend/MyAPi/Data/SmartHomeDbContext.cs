@@ -23,12 +23,7 @@ public class SmartHomeDbContext : DbContext
 
             Console.WriteLine($"Using database file: {fullDbPath}");
 
-            optionsBuilder
-                .UseSqlite($"Data Source={fullDbPath}")
-                .LogTo(Console.WriteLine,
-                    new[] { DbLoggerCategory.Database.Command.Name },
-                    LogLevel.Information)
-                .EnableSensitiveDataLogging();
+            optionsBuilder.UseSqlite($"Data Source={fullDbPath}");
         }
     }
 
