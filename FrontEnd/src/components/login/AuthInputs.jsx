@@ -10,7 +10,7 @@ const ControlContainer = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-export default function AuthInputs({ onLogin }) {
+export default function AuthInputs({ onLogin, error }) {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -52,6 +52,7 @@ export default function AuthInputs({ onLogin }) {
           }
         />
       </ControlContainer>
+      {error ? <p className="text-red-500 text-sm mb-2">{error}</p> : null}
       <div className="actions">
         <Button onClick={handleLogin}>Sign In</Button>
       </div>

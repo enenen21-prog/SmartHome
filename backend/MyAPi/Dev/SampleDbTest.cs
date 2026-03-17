@@ -3,9 +3,8 @@ using MyApi.Models;
 
 public static class SampleDbTest
 {
-    public static async Task RunAsync()
+    public static async Task RunAsync(SmartHomeDbContext db)
     {
-        await using var db = new SmartHomeDbContext();
         await db.Database.EnsureCreatedAsync();
 
         var room = await db.Rooms.FirstOrDefaultAsync();
@@ -74,25 +73,49 @@ public static class SampleDbTest
         db.Samples.AddRange(samples);
         await db.SaveChangesAsync();
 
-        if (!await db.Users.AnyAsync())
+        var adminEmail = "ela@smarthome.local".ToLowerInvariant();
+        var viewerEmail = "alex@smarthome.local".ToLowerInvariant();
+
+        var admin = await db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == adminEmail);
+        if (admin == null)
         {
-            db.Users.AddRange(
-                new User
-                {
-                    FirstName = "ela",
-                    LastName = "zem",
-                    Email = "ela@smarthome.local",
-                    Role = "admin"
-                },
-                new User
-                {
-                    FirstName = "alex",
-                    LastName = "zem",
-                    Email = "alex@smarthome.local",
-                    Role = "viewer"
-                }
-            );
-            await db.SaveChangesAsync();
+            db.Users.Add(new User
+            {
+                FirstName = "ela",
+                LastName = "zem",
+                Email = adminEmail,
+                Password = "password123",
+                Role = "admin"
+            });
         }
+        else
+        {
+            admin.FirstName = "ela";
+            admin.LastName = "zem";
+            admin.Password = "password123";
+            admin.Role = "admin";
+        }
+
+        var viewer = await db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == viewerEmail);
+        if (viewer == null)
+        {
+            db.Users.Add(new User
+            {
+                FirstName = "alex",
+                LastName = "zem",
+                Email = viewerEmail,
+                Password = "password123",
+                Role = "viewer"
+            });
+        }
+        else
+        {
+            viewer.FirstName = "alex";
+            viewer.LastName = "zem";
+            viewer.Password = "password123";
+            viewer.Role = "viewer";
+        }
+
+        await db.SaveChangesAsync();
     }
 }

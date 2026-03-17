@@ -1,10 +1,18 @@
+using Microsoft.EntityFrameworkCore;
 using MyApi.Services;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Adding the DbContext
-builder.Services.AddDbContext<SmartHomeDbContext>();
+builder.Services.AddDbContext<SmartHomeDbContext>(options =>
+{
+    var dbFolder = Path.Combine(builder.Environment.ContentRootPath, "db");
+    Directory.CreateDirectory(dbFolder);
+    var fullDbPath = Path.Combine(dbFolder, SmartHomeDbContext.DefaultDbName);
+    options.UseSqlite($"Data Source={fullDbPath}");
+});
 
 // Add services
 builder.Services.AddControllers();
@@ -36,6 +44,10 @@ app.UseCors("AllowReactDev");
 app.MapControllers();
 
 /* TEST */
-await SampleDbTest.RunAsync();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<SmartHomeDbContext>();
+    await SampleDbTest.RunAsync(db);
+}
 
 app.Run();

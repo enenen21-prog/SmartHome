@@ -31,11 +31,11 @@ const LoginShell = styled.section`
   }
 `;
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin, error }) {
   return (
     <LoginShell>
       <Header />
-      <AuthInputs onLogin={onLogin} />
+      <AuthInputs onLogin={onLogin} error={error} />
     </LoginShell>
   );
 }

@@ -6,18 +6,36 @@ import RoomsPage from './components/rooms/RoomsPage.jsx';
 import Alerts from './components/Alerts.jsx';
 import { LayoutContextProvider } from './layout/layout-context.jsx';
 import Login from './components/login/Login.jsx';
+import { login as loginApi } from './api/users.api.js';
 
 function AppContent() {
   const [activeOption, setActiveOption] = useState('rooms');
-  const [role, setRole] = useState('admin');
+  const [role, setRole] = useState('viewer');
   const [selectedRoomId, setSelectedRoomId] = useState(null);
   const [selectedDeviceId, setSelectedDeviceId] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [loginError, setLoginError] = useState('');
 
-  function handleLogin({ email }) {
-    setUserEmail(email);
-    setIsLoggedIn(true);
+  async function handleLogin({ email, password }) {
+    setLoginError('');
+    try {
+      const user = await loginApi(email, password);
+      setUserEmail(user.email);
+      setRole(user.role);
+      setIsLoggedIn(true);
+    } catch (error) {
+      setLoginError('Invalid email or password.');
+    }
+  }
+
+  function handleLogout() {
+    setIsLoggedIn(false);
+    setUserEmail('');
+    setRole('viewer');
+    setActiveOption('rooms');
+    setSelectedRoomId(null);
+    setSelectedDeviceId(null);
   }
 
   function renderContent() {
@@ -50,16 +68,15 @@ function AppContent() {
   return (
     <>
       {!isLoggedIn ? (
-        <Login onLogin={handleLogin} />
+        <Login onLogin={handleLogin} error={loginError} />
       ) : (
         <main className="h-screen flex gap-8 my-8">
           {/* Sidebar */}
           <MenuSidebar
             activeOption={activeOption}
             onSelectOption={setActiveOption}
-            role={role}
-            onRoleChange={setRole}
             userEmail={userEmail}
+            onLogout={handleLogout}
           />
 
           {/* Page content */}
