@@ -8,6 +8,7 @@ public class SmartHomeDbContext : DbContext
     public DbSet<Room> Rooms { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<Sample> Samples { get; set; }
+    public DbSet<User> Users { get; set; }
 
     public SmartHomeDbContext() { }
     public SmartHomeDbContext(DbContextOptions<SmartHomeDbContext> options) : base(options) { }
@@ -25,10 +26,5 @@ public class SmartHomeDbContext : DbContext
 
             optionsBuilder.UseSqlite($"Data Source={fullDbPath}");
         }
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
     }
 }

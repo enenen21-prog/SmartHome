@@ -4,7 +4,7 @@ import { LayoutContext } from '../../layout/layout-context.jsx';
 import Button from '../Button';
 import ConfirmModal from '../ConfirmModal.jsx';
 
-export default function RoomsList() {
+export default function RoomsList({ role }) {
   const { rooms, selectRoom, deleteRoom, startAddRoom } =
     useContext(LayoutContext);
   const confirmRef = useRef();
@@ -37,7 +37,9 @@ export default function RoomsList() {
             Manage rooms and assign devices.
           </p>
         </div>
-        <Button onClick={startAddRoom}>+ Add Room</Button>
+        {role === 'admin' ? (
+          <Button onClick={startAddRoom}>+ Add Room</Button>
+        ) : null}
       </div>
       <ul className="rounded-xl bg-white border border-stone-200 shadow-sm divide-y divide-stone-200">
         {rooms.map((room) => (
@@ -55,12 +57,14 @@ export default function RoomsList() {
               >
                 Details
               </button>
-              <button
-                className="px-3 py-1 rounded-md bg-stone-100 border border-stone-300 text-stone-800 transition hover:bg-stone-200"
-                onClick={() => handleDeleteClick(room.id)}
-              >
-                Delete
-              </button>
+              {role === 'admin' ? (
+                <button
+                  className="px-3 py-1 rounded-md bg-stone-100 border border-stone-300 text-stone-800 transition hover:bg-stone-200"
+                  onClick={() => handleDeleteClick(room.id)}
+                >
+                  Delete
+                </button>
+              ) : null}
             </div>
           </li>
         ))}

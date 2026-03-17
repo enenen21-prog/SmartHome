@@ -73,5 +73,26 @@ public static class SampleDbTest
 
         db.Samples.AddRange(samples);
         await db.SaveChangesAsync();
+
+        if (!await db.Users.AnyAsync())
+        {
+            db.Users.AddRange(
+                new User
+                {
+                    FirstName = "ela",
+                    LastName = "zem",
+                    Email = "ela@smarthome.local",
+                    Role = "admin"
+                },
+                new User
+                {
+                    FirstName = "alex",
+                    LastName = "zem",
+                    Email = "alex@smarthome.local",
+                    Role = "viewer"
+                }
+            );
+            await db.SaveChangesAsync();
+        }
     }
 }

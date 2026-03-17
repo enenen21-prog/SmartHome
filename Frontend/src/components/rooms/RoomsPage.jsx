@@ -6,18 +6,18 @@ import NoRoomsAdded from './NoRoomsAdded.jsx';
 import RoomsList from './RoomsList.jsx';
 import SelectedRoom from './SelectedRoom.jsx';
 
-export default function RoomsPage() {
+export default function RoomsPage({ role }) {
   const { view } = useContext(LayoutContext);
 
   switch (view) {
     case 'empty':
-      return <NoRoomsAdded />;
+      return <NoRoomsAdded role={role} />;
     case 'new':
-      return <NewRoom />;
+      return <NewRoom role={role} />;
     case 'details': {
-      return <SelectedRoom/>;
+      return <SelectedRoom role={role} />;
     }
   }
 
-  return <RoomsList />;
+  return <RoomsList role={role} />;
 }

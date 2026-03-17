@@ -4,7 +4,7 @@ import { LayoutContext } from '../../layout/layout-context.jsx';
 import Devices from '../devices/Devices.jsx';
 import BackButton from '../BackButton.jsx';
 
-export default function SelectedRoom() {
+export default function SelectedRoom({ role }) {
   const {
     rooms,
     selectedRoomId,
@@ -40,8 +40,7 @@ export default function SelectedRoom() {
           </p>
         </div>
       </header>
-      <Devices
-      />
+      <Devices role={role} />
     </div>
   );
 }

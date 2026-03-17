@@ -4,7 +4,7 @@ import { LayoutContext } from '../../layout/layout-context.jsx';
 import noProjectImage from '../../assets/no-room.png';
 import Button from '../Button';
 
-export default function NoRoomsAdded() {
+export default function NoRoomsAdded({ role }) {
   const { startAddRoom } = useContext(LayoutContext);
 
   return (
@@ -15,10 +15,18 @@ export default function NoRoomsAdded() {
         className="w-16 h-16 object-contain mx-auto"
       />
       <h2 className="text-xl font-bold text-stone-500 my-4">No Rooms Added</h2>
-      <p className="text-stone-400 mb-4">Add a room</p>
-      <p className="mt-8">
-        <Button onClick={startAddRoom}>+ New Room</Button>
-      </p>
+      {role === 'admin' ? (
+        <>
+          <p className="text-stone-400 mb-4">Add a room</p>
+          <p className="mt-8">
+            <Button onClick={startAddRoom}>+ New Room</Button>
+          </p>
+        </>
+      ) : (
+        <p className="text-stone-400 mb-4">
+          Ask an admin to add rooms.
+        </p>
+      )}
     </div>
   );
 }

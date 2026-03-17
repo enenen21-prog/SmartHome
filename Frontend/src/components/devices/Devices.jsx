@@ -4,7 +4,7 @@ import { LayoutContext } from '../../layout/layout-context.jsx';
 import NewDevice from './NewDevice';
 import ConfirmModal from '../ConfirmModal.jsx';
 
-export default function Devices() {
+export default function Devices({ role }) {
   const { devices, selectedRoomId, deleteDevice } = useContext(LayoutContext);
   const roomDevices = devices.filter((d) => d.roomId === selectedRoomId);
   const confirmRef = useRef();
@@ -34,7 +34,7 @@ export default function Devices() {
         <h2 className="text-2xl font-bold text-stone-700">Devices</h2>
         <p className="text-sm text-stone-500">Devices in this room.</p>
       </div>
-      <NewDevice />
+      {role === 'admin' ? <NewDevice /> : null}
       {roomDevices.length === 0 && (
         <p className="text-stone-800 my-4">
           This room does not have any devices yet
@@ -55,12 +55,14 @@ export default function Devices() {
                   {device.ipv4Address}
                 </span>
               </div>
-              <button
-                className="px-3 py-1 rounded-md bg-stone-100 border border-stone-300 text-stone-800 transition hover:bg-stone-200"
-                onClick={() => handleDeleteClick(device.id)}
-              >
-                Delete
-              </button>
+              {role === 'admin' ? (
+                <button
+                  className="px-3 py-1 rounded-md bg-stone-100 border border-stone-300 text-stone-800 transition hover:bg-stone-200"
+                  onClick={() => handleDeleteClick(device.id)}
+                >
+                  Delete
+                </button>
+              ) : null}
             </li>
           ))}
         </ul>

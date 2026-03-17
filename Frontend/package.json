@@ -15,7 +15,8 @@
     "axios": "^1.13.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^3.7.0"
+    "recharts": "^3.7.0",
+    "styled-components": "^6.3.11"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

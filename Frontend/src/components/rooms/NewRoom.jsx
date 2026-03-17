@@ -6,7 +6,7 @@ import Modal from '../Modal';
 import Button from '../Button';
 import BackButton from '../BackButton.jsx';
 
-export default function NewRoom() {
+export default function NewRoom({ role }) {
   const modal = useRef();
   const title = useRef();
   const description = useRef();
@@ -30,6 +30,18 @@ export default function NewRoom() {
       title: enteredTitle,
       description: enteredDescription,
     });
+  }
+
+  if (role !== 'admin') {
+    return (
+      <section className="space-y-6">
+        <h1 className="text-2xl font-bold text-stone-700">Create a New Room</h1>
+        <p className="text-stone-600">
+          You don’t have permission to add rooms.
+        </p>
+        <BackButton onClick={cancelAddRoom} />
+      </section>
+    );
   }
 
   return (
