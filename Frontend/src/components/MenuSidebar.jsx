@@ -4,6 +4,7 @@ const MENU_ITEMS = [
   { id: 'rooms', label: 'Rooms' },
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'alerts', label: 'Alerts' },
+  { id: 'location', label: 'Location' },
 ];
 
 

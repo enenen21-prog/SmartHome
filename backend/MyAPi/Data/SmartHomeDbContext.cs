@@ -9,6 +9,7 @@ public class SmartHomeDbContext : DbContext
     public DbSet<Device> Devices { get; set; }
     public DbSet<Sample> Samples { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<HomeLocation> HomeLocation { get; set; }
 
     public SmartHomeDbContext() { }
     public SmartHomeDbContext(DbContextOptions<SmartHomeDbContext> options) : base(options) { }
