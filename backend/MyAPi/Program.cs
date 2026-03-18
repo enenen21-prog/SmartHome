@@ -16,6 +16,7 @@ builder.Services.AddDbContext<SmartHomeDbContext>(options =>
 
 // Add services
 builder.Services.AddControllers();
+builder.Services.AddHttpClient();
 
 // Add CORS
 builder.Services.AddCors(options =>

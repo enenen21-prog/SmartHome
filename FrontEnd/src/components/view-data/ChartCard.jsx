@@ -1,4 +1,4 @@
-import {
+﻿import {
   Area,
   AreaChart,
   CartesianGrid,
@@ -18,13 +18,26 @@ const SERIES = {
   co2: { stroke: '#dc2626', fill: '#fecaca' },
 };
 
+const UNITS = {
+  temperature: '\u00B0C',
+  humidity: '%',
+  light: 'lux',
+  co2: 'ppm',
+};
+
 export default function ChartCard({ title, dataKey, data }) {
   const colors = SERIES[dataKey] ?? { stroke: '#1c1917', fill: '#e7e5e4' };
   const gradientId = `grad-${dataKey}`;
+  const unit = UNITS[dataKey] ?? '';
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_20px_40px_rgba(15,23,42,0.25)]">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-slate-100">{title}</h2>
+          {unit ? (
+            <span className="text-xs text-slate-400">({unit})</span>
+          ) : null}
+        </div>
         <span className="text-xs text-slate-400">Last 24h</span>
       </div>
       <div className="h-56">

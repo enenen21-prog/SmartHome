@@ -3,7 +3,6 @@ import MenuSidebar from './components/MenuSidebar.jsx';
 import Dashboard from './components/dashboard/Dashboard.jsx';
 import ViewData from './components/view-data/ViewData.jsx';
 import RoomsPage from './components/rooms/RoomsPage.jsx';
-import Alerts from './components/Alerts.jsx';
 import LocationPage from './components/location/LocationPage.jsx';
 import { LayoutContextProvider } from './layout/layout-context.jsx';
 import Login from './components/login/Login.jsx';
@@ -43,14 +42,13 @@ function AppContent() {
     switch (activeOption) {
       case 'rooms':
         return <RoomsPage role={role} />;
-      case 'alerts':
-        return <Alerts />;
       case 'location':
         return <LocationPage />;
       case 'view-data':
         return (
           <ViewData
             onBack={() => setActiveOption('dashboard')}
+            onGoToLocation={() => setActiveOption('location')}
             roomId={selectedRoomId}
             deviceId={selectedDeviceId}
           />
