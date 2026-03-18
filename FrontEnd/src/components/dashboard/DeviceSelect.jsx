@@ -5,9 +5,9 @@ export default function DeviceSelect({
   value,
   onChange,
   disabled,
-  placeholder,
 }) {
   const options = devices.map((device) => ({ value: device.id, label: device.name }));
+  const placeholder = disabled ? 'Select a room first' : 'No devices in this room';
 
   return (
     <SelectInput
@@ -15,7 +15,7 @@ export default function DeviceSelect({
       value={value}
       onChange={onChange}
       options={options}
-      placeholder={placeholder}
+      placeholder={options.length === 0 ? placeholder : undefined}
       disabled={disabled}
     />
   );

@@ -43,13 +43,7 @@ export default function Dashboard({
     loadDevices();
   }, [selectedRoomId, selectedDeviceId, onDeviceChange]);
 
-  const deviceSelectDisabled =
-    !selectedRoomId || isLoadingDevices || devices.length === 0;
-  const devicePlaceholder = !selectedRoomId
-    ? 'Select a room first'
-    : devices.length === 0
-      ? 'No devices in this room'
-      : '';
+  const deviceSelectDisabled = !selectedRoomId || isLoadingDevices;
 
   return (
     <section className="space-y-6">
@@ -66,7 +60,6 @@ export default function Dashboard({
           value={selectedDeviceId}
           onChange={(e) => onDeviceChange(Number(e.target.value) || null)}
           disabled={deviceSelectDisabled}
-          placeholder={devicePlaceholder}
         />
         <Button
           type="button"
