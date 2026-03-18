@@ -15,42 +15,57 @@ public class RoomsController : ControllerBase
         _roomService = roomService;
     }
 
-    // GET /api/Rooms
+    /*
+    Description: Retrieves all rooms.
+    Input: None.
+    Return: List of rooms.
+    API: GET /api/Rooms
+    */
     [HttpGet]
     public async Task<IActionResult> GetRooms()
     {
         try
         {
             var rooms = await _roomService.GetRoomsAsync();
-            return new ObjectResult(rooms) { StatusCode = 200 };
+            return ApiResults.Result(rooms, 200);
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine(ex);
-            return new ObjectResult(new { message = "Failed to fetch rooms" }) { StatusCode = 500 };
+            return ApiResults.Message("Failed to fetch rooms", 500);
         }
     }
 
-    // POST /api/Rooms
+    /*
+    Description: Creates a new room.
+    Input: newRoom (Room) - room payload in request body.
+    Return: The created room.
+    API: POST /api/Rooms
+    */
     [HttpPost]
     public async Task<IActionResult> AddRoom([FromBody] Room newRoom)
     {
         if (string.IsNullOrEmpty(newRoom.Title))
-            return new ObjectResult(new { message = "Title is required" }) { StatusCode = 400 };
+            return ApiResults.Message("Title is required", 400);
 
         try
         {
             var createdRoom = await _roomService.AddRoomAsync(newRoom);
-            return new ObjectResult(createdRoom) { StatusCode = 201 };
+            return ApiResults.Result(createdRoom, 201);
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine(ex);
-            return new ObjectResult(new { message = "Failed to create room" }) { StatusCode = 500 };
+            return ApiResults.Message("Failed to create room", 500);
         }
     }
 
-    // DELETE /api/Rooms/{id}
+    /*
+    Description: Deletes a room by its id.
+    Input: id (int) - room identifier from route.
+    Return: 204 if deleted; 404 if not found.
+    API: DELETE /api/Rooms/{id}
+    */
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteRoom(int id)
     {
@@ -59,14 +74,14 @@ public class RoomsController : ControllerBase
             var success = await _roomService.DeleteRoomAsync(id);
 
             if (!success)
-                return new ObjectResult(new { message = "Room not found" }) { StatusCode = 404 };
+                return ApiResults.Message("Room not found", 404);
 
-            return new StatusCodeResult(204);
+            return ApiResults.Result(null, 204);
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine(ex);
-            return new ObjectResult(new { message = "Failed to delete room" }) { StatusCode = 500 };
+            return ApiResults.Message("Failed to delete room", 500);
         }
     }
 }

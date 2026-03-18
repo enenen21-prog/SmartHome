@@ -16,43 +16,53 @@ public class SamplesController : ControllerBase
         _sampleService = sampleService;
     }
 
-    // GET: api/samples?roomId=1&deviceId=2&range=last-hour
+    /*
+    Description: Retrieves samples for a device in a room over a time range.
+    Input: roomId (int), deviceId (int), range (string) from query.
+    Return: List of SampleResponse for the requested range.
+    API: GET: api/samples?roomId=5&deviceId=10&range=last-24h
+    */
     [HttpGet]
-    public async Task<ActionResult<List<SampleDto>>> GetSamples(
+    public async Task<ActionResult<List<SampleResponse>>> GetSamples(
         [FromQuery] int roomId,
         [FromQuery] int deviceId,
         [FromQuery] string range = "last-24h")
     {
         if (roomId <= 0)
-            return new ObjectResult(new { message = "RoomId is required" }) { StatusCode = 400 };
+            return ApiResults.Message("RoomId is required", 400);
 
         if (deviceId <= 0)
-            return new ObjectResult(new { message = "DeviceId is required" }) { StatusCode = 400 };
+            return ApiResults.Message("DeviceId is required", 400);
 
         if (!TryGetFromUtc(range, out var fromUtc))
-            return new ObjectResult(new { message = "Invalid range" }) { StatusCode = 400 };
+            return ApiResults.Message("Invalid range", 400);
 
         var samples = await _sampleService.GetSamplesAsync(roomId, deviceId, fromUtc);
-        var response = samples.Select(s => new SampleDto
+        var response = samples.Select(sample => new SampleResponse
         {
-            Id = s.Id,
-            DeviceId = s.DeviceId,
-            Temperature = s.Temperature,
-            Humidity = s.Humidity,
-            Light = s.Light,
-            Co2 = s.Co2,
-            TimestampUtc = s.TimestampUtc
+            Id = sample.Id,
+            DeviceId = sample.DeviceId,
+            Temperature = sample.Temperature,
+            Humidity = sample.Humidity,
+            Light = sample.Light,
+            Co2 = sample.Co2,
+            TimestampUtc = sample.TimestampUtc
         }).ToList();
 
-        return new ObjectResult(response) { StatusCode = 200 };
+        return ApiResults.Result(response, 200);
     }
 
-    // POST: api/samples
+    /*
+    Description: Creates a new sample for a device.
+    Input: request (SampleCreateRequest) - sample payload in request body.
+    Return: The created Sample.
+    API: POST: api/samples
+    */
     [HttpPost]
     public async Task<ActionResult<Sample>> AddSample([FromBody] SampleCreateRequest request)
     {
         if (request.DeviceId <= 0)
-            return new ObjectResult(new { message = "DeviceId is required" }) { StatusCode = 400 };
+            return ApiResults.Message("DeviceId is required", 400);
 
         var sample = new Sample
         {
@@ -67,14 +77,19 @@ public class SamplesController : ControllerBase
         try
         {
             var created = await _sampleService.AddSampleAsync(sample);
-            return new ObjectResult(created) { StatusCode = 201 };
+            return ApiResults.Result(created, 201);
         }
         catch (ArgumentException)
         {
-            return new ObjectResult(new { message = "Device not found" }) { StatusCode = 404 };
+            return ApiResults.Message("Device not found", 404);
         }
     }
 
+    /*
+    Description: Converts a range key into a UTC start time.
+    Input: range (string) - range key; fromUtc (out DateTime) - computed start time.
+    Return: True if range is valid; false otherwise.
+    */
     private static bool TryGetFromUtc(string range, out DateTime fromUtc)
     {
         var now = DateTime.UtcNow;

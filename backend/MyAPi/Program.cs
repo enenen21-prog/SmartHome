@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Adding the DbContext
 builder.Services.AddDbContext<SmartHomeDbContext>(options =>
 {
-    var dbFolder = Path.Combine(builder.Environment.ContentRootPath, "db");
+    var dbFolder = Path.Combine(builder.Environment.ContentRootPath, "Database");
     Directory.CreateDirectory(dbFolder);
     var fullDbPath = Path.Combine(dbFolder, SmartHomeDbContext.DefaultDbName);
     options.UseSqlite($"Data Source={fullDbPath}");

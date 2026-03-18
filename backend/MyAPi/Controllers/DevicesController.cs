@@ -15,39 +15,54 @@ public class DevicesController : ControllerBase
         _deviceService = deviceService;
     }
 
-    // GET: api/devices/room/{roomId}
+    /*
+    Description: Returns devices assigned to a specific room.
+    Input: roomId (int) - room identifier from route.
+    Return: List of Device for the room.
+    API: GET: api/devices/room/{roomId} --> api/devices/room/5
+    */
     [HttpGet("room/{roomId}")]
     public async Task<ActionResult<List<Device>>> GetDevicesByRoomId(int roomId)
     {
         var devices = await _deviceService.GetDevicesByRoomIdAsync(roomId);
-        return new ObjectResult(devices) { StatusCode = 200 };
+        return ApiResults.Result(devices, 200);
     }
 
-    // POST: api/devices
+    /*
+    Description: Creates a new device in the specified room.
+    Input: newDevice (Device) - device payload in request body.
+    Return: The created Device.
+    API: POST: api/devices --> api/devices
+    */
     [HttpPost]
     public async Task<ActionResult<Device>> AddDevice([FromBody] Device newDevice)
     {
         if (string.IsNullOrWhiteSpace(newDevice.Name))
-            return new ObjectResult(new { message = "Name is required" }) { StatusCode = 400 };
+            return ApiResults.Message("Name is required", 400);
 
         if (string.IsNullOrWhiteSpace(newDevice.Ipv4Address))
-            return new ObjectResult(new { message = "IPv4 address is required" }) { StatusCode = 400 };
+            return ApiResults.Message("IPv4 address is required", 400);
 
         if (newDevice.RoomId <= 0)
-            return new ObjectResult(new { message = "RoomId is required" }) { StatusCode = 400 };
+            return ApiResults.Message("RoomId is required", 400);
 
         var createdDevice = await _deviceService.AddDeviceAsync(newDevice);
-        return new ObjectResult(createdDevice) { StatusCode = 201 };
+        return ApiResults.Result(createdDevice, 201);
     }
 
-    // DELETE: api/devices/{id}
+    /*
+    Description: Deletes a device by its id.
+    Input: id (int) - device identifier from route.
+    Return: 204 if deleted; 404 if not found.
+    API: DELETE: api/devices/{id} --> api/devices/10
+    */
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDevice(int id)
     {
         var success = await _deviceService.DeleteDeviceAsync(id);
         if (!success)
-            return new ObjectResult(new { message = "Device not found" }) { StatusCode = 404 };
+            return ApiResults.Message("Device not found", 404);
 
-        return new StatusCodeResult(204);
+        return ApiResults.Result(null, 204);
     }
 }

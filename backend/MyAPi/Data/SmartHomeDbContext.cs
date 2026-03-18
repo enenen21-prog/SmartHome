@@ -19,7 +19,7 @@ public class SmartHomeDbContext : DbContext
         if (!optionsBuilder.IsConfigured)
         {
             var projectRoot = Directory.GetCurrentDirectory();
-            var dbFolder = Path.Combine(projectRoot, "db");
+            var dbFolder = Path.Combine(projectRoot, "Database");
             Directory.CreateDirectory(dbFolder);
             var fullDbPath = Path.Combine(dbFolder, DefaultDbName);
 

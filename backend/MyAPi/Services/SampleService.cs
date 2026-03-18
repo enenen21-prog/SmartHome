@@ -10,9 +10,14 @@ public class SampleService : ISampleService
         _db = db;
     }
 
+    /*
+    Description: Adds a new sample for a device after validating device existence.
+    Input: newSample (Sample) - sample to create.
+    Return: The created Sample entity.
+    */
     public async Task<Sample> AddSampleAsync(Sample newSample)
     {
-        var deviceExists = await _db.Devices.AnyAsync(d => d.Id == newSample.DeviceId);
+        var deviceExists = await _db.Devices.AnyAsync(device => device.Id == newSample.DeviceId);
         if (!deviceExists)
         {
             throw new ArgumentException("Device not found", nameof(newSample.DeviceId));
@@ -23,19 +28,19 @@ public class SampleService : ISampleService
         return newSample;
     }
 
+    /*
+    Description: Retrieves samples for a device in a room from a given start time.
+    Input: roomId (int) - room identifier; deviceId (int) - device identifier; fromUtc (DateTime) - start time.
+    Return: List of samples ordered by timestamp.
+    */
     public async Task<List<Sample>> GetSamplesAsync(int roomId, int deviceId, DateTime fromUtc)
     {
         return await _db.Samples
-            .Join(
-                _db.Devices,
-                sample => sample.DeviceId,
-                device => device.Id,
-                (sample, device) => new { sample, device }
-            )
-            .Where(x => x.device.RoomId == roomId && x.sample.DeviceId == deviceId)
-            .Where(x => x.sample.TimestampUtc >= fromUtc)
-            .OrderBy(x => x.sample.TimestampUtc)
-            .Select(x => x.sample)
+            .Where(s => s.Device != null &&
+                        s.Device.RoomId == roomId &&
+                        s.DeviceId == deviceId &&
+                        s.TimestampUtc >= fromUtc)
+            .OrderBy(s => s.TimestampUtc)
             .ToListAsync();
     }
 }

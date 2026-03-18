@@ -10,6 +10,8 @@ public class Sample
     [Required]
     public int DeviceId { get; set; }
 
+    public Device? Device { get; set; }
+
     [Required]
     public double Temperature { get; set; }
 

@@ -1,6 +1,6 @@
 namespace MyApi.DTO;
 
-public class SampleDto
+public class SampleResponse
 {
     public int Id { get; set; }
     public int DeviceId { get; set; }

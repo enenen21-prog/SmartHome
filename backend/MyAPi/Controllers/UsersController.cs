@@ -15,17 +15,19 @@ public class UsersController : ControllerBase
         _db = db;
     }
 
-    // POST: api/users/login
+    /*
+    Description: Authenticates a user with email and password.
+    Input: request (LoginRequest) - login credentials in request body.
+    Return: LoginResponse on success; error status on failure.
+    API: POST: api/users/login
+    */
     [HttpPost("login")]
     public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Email) ||
             string.IsNullOrWhiteSpace(request.Password))
         {
-            return new ObjectResult(new { message = "Email and password are required" })
-            {
-                StatusCode = 400
-            };
+            return ApiResults.Message("Email and password are required", 400);
         }
 
         var email = request.Email.Trim().ToLowerInvariant();
@@ -33,15 +35,12 @@ public class UsersController : ControllerBase
 
         var user = await _db.Users
             .AsNoTracking()
-            .FirstOrDefaultAsync(u =>
-                u.Email.ToLower() == email && u.Password == password);
+            .FirstOrDefaultAsync(user =>
+                user.Email.ToLower() == email && user.Password == password);
 
         if (user == null)
         {
-            return new ObjectResult(new { message = "Invalid credentials" })
-            {
-                StatusCode = 401
-            };
+            return ApiResults.Message("Invalid credentials", 401);
         }
 
         var response = new LoginResponse
@@ -52,6 +51,6 @@ public class UsersController : ControllerBase
             LastName = user.LastName
         };
 
-        return new ObjectResult(response) { StatusCode = 200 };
+        return ApiResults.Result(response, 200);
     }
 }

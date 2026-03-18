@@ -10,14 +10,24 @@ public class DeviceService : IDeviceService
         _db = db;
     }
 
+    /*
+    Description: Retrieves all devices for a given room.
+    Input: roomId (int) - room identifier.
+    Return: List of devices that belong to the room.
+    */
     public async Task<List<Device>> GetDevicesByRoomIdAsync(int roomId)
     {
         return await _db.Devices
             .AsNoTracking()
-            .Where(d => d.RoomId == roomId)
+            .Where(room => room.RoomId == roomId)
             .ToListAsync();
     }
 
+    /*
+    Description: Adds a new device record to the database.
+    Input: newDevice (Device) - device to create.
+    Return: The created Device entity.
+    */
     public async Task<Device> AddDeviceAsync(Device newDevice)
     {
         _db.Devices.Add(newDevice);
@@ -25,6 +35,11 @@ public class DeviceService : IDeviceService
         return newDevice;
     }
 
+    /*
+    Description: Deletes a device by its id if it exists.
+    Input: id (int) - device id to delete.
+    Return: True if deleted; false if not found.
+    */
     public async Task<bool> DeleteDeviceAsync(int id)
     {
         var device = await _db.Devices.FirstOrDefaultAsync(d => d.Id == id);

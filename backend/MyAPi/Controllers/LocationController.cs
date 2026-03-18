@@ -16,26 +16,37 @@ public class LocationController : ControllerBase
         _db = db;
     }
 
-    // GET: api/location
+    /*
+    Description: Retrieves the saved home location.
+    Input: None.
+    Return: Location data or 404 if not set.
+    API: GET: api/location
+    */
     [HttpGet]
     public async Task<IActionResult> GetLocation()
     {
         var location = await _db.HomeLocation.AsNoTracking().FirstOrDefaultAsync();
         if (location == null)
         {
-            return new StatusCodeResult(404);
+            return ApiResults.Message("Home location is not set", 404);
         }
 
-        return new ObjectResult(new
+        var response = new HomeLocationResponse
         {
-            location.City,
-            location.Country,
-            location.UpdatedAtUtc
-        })
-        { StatusCode = 200 };
+            City = location.City,
+            Country = location.Country,
+            UpdatedAtUtc = location.UpdatedAtUtc
+        };
+
+        return ApiResults.Result(response, 200);
     }
 
-    // PUT: api/location
+    /*
+    Description: Creates or updates the single home location.
+    Input: request (HomeLocationRequest) - city and country in request body.
+    Return: The saved location data.
+    API: PUT: api/location
+    */
     [HttpPut]
     public async Task<IActionResult> SaveLocation([FromBody] HomeLocationRequest request)
     {
@@ -44,18 +55,12 @@ public class LocationController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(city) || string.IsNullOrWhiteSpace(country))
         {
-            return new ObjectResult(new { message = "City and country are required" })
-            {
-                StatusCode = 400
-            };
+            return ApiResults.Message("City and country are required", 400);
         }
 
         if (city.Length > 80 || country.Length > 80)
         {
-            return new ObjectResult(new { message = "City and country must be 80 characters or less" })
-            {
-                StatusCode = 400
-            };
+            return ApiResults.Message("City and country must be 80 characters or less", 400);
         }
 
         var location = await _db.HomeLocation.FirstOrDefaultAsync();
@@ -78,12 +83,13 @@ public class LocationController : ControllerBase
 
         await _db.SaveChangesAsync();
 
-        return new ObjectResult(new
+        var response = new HomeLocationResponse
         {
-            location.City,
-            location.Country,
-            location.UpdatedAtUtc
-        })
-        { StatusCode = 200 };
+            City = location.City,
+            Country = location.Country,
+            UpdatedAtUtc = location.UpdatedAtUtc
+        };
+
+        return ApiResults.Result(response, 200);
     }
 }
