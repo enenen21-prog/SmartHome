@@ -3,6 +3,7 @@ import { LayoutContext } from '../../layout/layout-context.jsx';
 import { getDevicesByRoom } from '../../api/devices.api.js';
 import RoomSelect from './RoomSelect.jsx';
 import DeviceSelect from './DeviceSelect.jsx';
+import Button from '../Button.jsx';
 
 export default function Dashboard({
   onViewData,
@@ -67,14 +68,14 @@ export default function Dashboard({
           disabled={deviceSelectDisabled}
           placeholder={devicePlaceholder}
         />
-        <button
+        <Button
           type="button"
-          className="mt-2 w-fit px-4 py-2 rounded-xl bg-white/10 border border-white/10 text-slate-100 hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-2 w-fit"
           onClick={onViewData}
           disabled={!selectedDeviceId}
         >
           Measurements
-        </button>
+        </Button>
       </div>
     </section>
   );
