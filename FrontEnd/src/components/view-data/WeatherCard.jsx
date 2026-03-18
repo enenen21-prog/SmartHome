@@ -83,14 +83,18 @@ export default function WeatherCard({
           <div>
             <p className="text-xs text-slate-400">Temperature</p>
             <p className="text-2xl font-semibold text-slate-100">
-              {weather.temperatureC ?? '—'}
+              {weather.temperatureC !== null && weather.temperatureC !== undefined
+                ? Math.round(weather.temperatureC)
+                : '—'}
               <span className="text-base font-medium text-slate-300">&deg;C</span>
             </p>
           </div>
           <div>
             <p className="text-xs text-slate-400">Humidity</p>
             <p className="text-2xl font-semibold text-slate-100">
-              {weather.humidityPercent ?? '—'}
+              {weather.humidityPercent !== null && weather.humidityPercent !== undefined
+                ? Math.round(weather.humidityPercent)
+                : '—'}
               <span className="text-base font-medium text-slate-300">%</span>
             </p>
           </div>
