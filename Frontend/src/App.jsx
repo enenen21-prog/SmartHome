@@ -4,9 +4,11 @@ import Dashboard from './components/dashboard/Dashboard.jsx';
 import ViewData from './components/view-data/ViewData.jsx';
 import RoomsPage from './components/rooms/RoomsPage.jsx';
 import LocationPage from './components/location/LocationPage.jsx';
+import UsersPage from './components/users/UsersPage.jsx';
 import { LayoutContextProvider } from './layout/layout-context.jsx';
 import Login from './components/login/Login.jsx';
 import { login as loginApi } from './api/users.api.js';
+import { UsersProvider } from './users/users-context.jsx';
 
 function AppContent() {
   const [activeOption, setActiveOption] = useState('rooms');
@@ -42,6 +44,8 @@ function AppContent() {
     switch (activeOption) {
       case 'rooms':
         return <RoomsPage role={role} />;
+      case 'users':
+        return <UsersPage role={role} />;
       case 'location':
         return <LocationPage />;
       case 'view-data':
@@ -93,7 +97,9 @@ function AppContent() {
 export default function App() {
   return (
     <LayoutContextProvider>
-      <AppContent />
+      <UsersProvider>
+        <AppContent />
+      </UsersProvider>
     </LayoutContextProvider>
   );
 }

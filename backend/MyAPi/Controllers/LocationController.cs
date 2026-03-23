@@ -25,7 +25,7 @@ public class LocationController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetLocation()
     {
-        var location = await _db.HomeLocation.AsNoTracking().FirstOrDefaultAsync();
+        var location = await _db.HomeLocation.FirstOrDefaultAsync();
         if (location == null)
         {
             return ApiResults.Message("Home location is not set", 404);

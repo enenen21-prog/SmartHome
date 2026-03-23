@@ -5,6 +5,7 @@ import noProjectImage from '../../assets/no-room.png';
 import Button from '../Button';
 
 export default function NoRoomsAdded({ role }) {
+  const isAdmin = role === 'admin';
   const { startAddRoom } = useContext(LayoutContext);
 
   return (
@@ -17,7 +18,7 @@ export default function NoRoomsAdded({ role }) {
       <h2 className="text-xl font-semibold text-slate-100 my-4">
         No Rooms Added
       </h2>
-      {role === 'admin' ? (
+      {isAdmin ? (
         <>
           <p className="text-slate-400 mb-4">Add a room</p>
           <p className="mt-8">

@@ -19,7 +19,7 @@ namespace MyApi.Services
         */
         public async Task<List<Room>> GetRoomsAsync()
         {
-            return await _db.Rooms.AsNoTracking().ToListAsync();
+            return await _db.Rooms.ToListAsync();
         }
 
         /*

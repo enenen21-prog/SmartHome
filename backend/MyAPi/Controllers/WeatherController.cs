@@ -31,7 +31,7 @@ public class WeatherController : ControllerBase
     [HttpGet("current")]
     public async Task<IActionResult> GetCurrentWeather()
     {
-        var location = await _db.HomeLocation.AsNoTracking().FirstOrDefaultAsync();
+        var location = await _db.HomeLocation.FirstOrDefaultAsync();
         if (location == null)
         {
             return ApiResults.Message("Home location is not set", 404);

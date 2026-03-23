@@ -3,6 +3,7 @@ import { LayoutContext } from '../layout/layout-context.jsx';
 const MENU_ITEMS = [
   { id: 'rooms', label: 'Rooms' },
   { id: 'dashboard', label: 'Dashboard' },
+  { id: 'users', label: 'Users' },
   { id: 'location', label: 'Location' },
 ];
 

@@ -68,8 +68,7 @@ export default function LocationPage() {
       <div>
         <h1 className="text-2xl font-semibold text-slate-100">Location</h1>
         <p className="mt-4 text-sm text-slate-400">
-          Choose your city and country. We will use this later to fetch current
-          temperature and humidity.
+          Choose your city and country
         </p>
       </div>
 

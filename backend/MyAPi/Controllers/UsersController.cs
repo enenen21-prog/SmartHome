@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyApi.DTO;
+using MyApi.Models;
 
 namespace MyApi.Controllers;
 
@@ -34,7 +35,6 @@ public class UsersController : ControllerBase
         var password = request.Password.Trim();
 
         var user = await _db.Users
-            .AsNoTracking()
             .FirstOrDefaultAsync(user =>
                 user.Email.ToLower() == email && user.Password == password);
 
@@ -52,5 +52,108 @@ public class UsersController : ControllerBase
         };
 
         return ApiResults.Result(response, 200);
+    }
+
+    /*
+    Description: Retrieves all users.
+    Input: None.
+    Return: List of UserResponse.
+    API: GET: api/users
+    */
+    [HttpGet]
+    public async Task<ActionResult<List<UserResponse>>> GetUsers()
+    {
+        var users = await _db.Users
+            .OrderBy(user => user.Id)
+            .Select(user => new UserResponse
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role
+            })
+            .ToListAsync();
+
+        return ApiResults.Result(users, 200);
+    }
+
+    /*
+    Description: Deletes a user by id.
+    Input: id (int) - user identifier from route.
+    Return: 204 if deleted; 404 if not found.
+    API: DELETE: api/users/{id}
+    */
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        if (user == null)
+        {
+            return ApiResults.Message("User not found", 404);
+        }
+
+        _db.Users.Remove(user);
+        await _db.SaveChangesAsync();
+        return ApiResults.Result(null, 204);
+    }
+
+    /*
+    Description: Creates a new user account.
+    Input: request (UserCreateRequest) - user details in request body.
+    Return: UserResponse for the created user.
+    API: POST: api/users
+    */
+    [HttpPost]
+    public async Task<ActionResult<UserResponse>> CreateUser([FromBody] UserCreateRequest request)
+    {
+        var firstName = request.FirstName.Trim();
+        var lastName = request.LastName.Trim();
+        var email = request.Email.Trim().ToLowerInvariant();
+        var password = request.Password.Trim();
+        var role = request.Role.Trim().ToLowerInvariant();
+
+        if (string.IsNullOrWhiteSpace(firstName) ||
+            string.IsNullOrWhiteSpace(lastName) ||
+            string.IsNullOrWhiteSpace(email) ||
+            string.IsNullOrWhiteSpace(password) ||
+            string.IsNullOrWhiteSpace(role))
+        {
+            return ApiResults.Message("All fields are required", 400);
+        }
+
+        if (role != "admin" && role != "viewer")
+        {
+            return ApiResults.Message("Role must be admin or viewer", 400);
+        }
+
+        var existing = await _db.Users.FirstOrDefaultAsync(user => user.Email.ToLower() == email);
+        if (existing != null)
+        {
+            return ApiResults.Message("Email already exists", 409);
+        }
+
+        var user = new User
+        {
+            FirstName = firstName,
+            LastName = lastName,
+            Email = email,
+            Password = password,
+            Role = role
+        };
+
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync();
+
+        var response = new UserResponse
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Role = user.Role
+        };
+
+        return ApiResults.Result(response, 201);
     }
 }

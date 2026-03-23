@@ -18,7 +18,6 @@ public class DeviceService : IDeviceService
     public async Task<List<Device>> GetDevicesByRoomIdAsync(int roomId)
     {
         return await _db.Devices
-            .AsNoTracking()
             .Where(room => room.RoomId == roomId)
             .ToListAsync();
     }

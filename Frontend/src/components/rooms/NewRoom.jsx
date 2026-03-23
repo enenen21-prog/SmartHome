@@ -7,6 +7,7 @@ import Button from '../Button';
 import BackButton from '../BackButton.jsx';
 
 export default function NewRoom({ role }) {
+  const isAdmin = role === 'admin';
   const modal = useRef();
   const title = useRef();
   const description = useRef();
@@ -32,7 +33,7 @@ export default function NewRoom({ role }) {
     });
   }
 
-  if (role !== 'admin') {
+  if (!isAdmin) {
     return (
       <section className="space-y-6">
         <h1 className="text-2xl font-semibold text-slate-100">
