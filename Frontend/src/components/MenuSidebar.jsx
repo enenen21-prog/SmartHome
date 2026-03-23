@@ -14,6 +14,13 @@ export default function MenuSidebar({
   userEmail,
   onLogout,
 }) {
+  function getMenuItemCssClasses(isActive) {
+    const base = 'w-full text-left px-3 py-2 rounded-lg transition';
+    const active = 'bg-white/10 text-slate-100';
+    const inactive = 'text-slate-400 hover:text-slate-100 hover:bg-white/10';
+    return `${base} ${isActive ? active : inactive}`;
+  }
+
   const { selectMenu } = useContext(LayoutContext);
   return (
     <aside className="w-1/4 px-6 py-12 bg-white/5 border border-white/10 text-slate-100 md:w-64 rounded-2xl backdrop-blur-xl shadow-[0_24px_50px_rgba(15,23,42,0.35)]">
@@ -25,12 +32,7 @@ export default function MenuSidebar({
       ) : null}
       <ul className="mt-8">
         {MENU_ITEMS.map((item) => {
-          let cssClasses =
-            'w-full text-left px-3 py-2 rounded-lg transition hover:text-slate-100 hover:bg-white/10';
-          cssClasses +=
-            item.id === activeOption
-              ? ' bg-white/10 text-slate-100'
-              : ' text-slate-400';
+          const cssClasses = getMenuItemCssClasses(item.id === activeOption);
 
           return (
             <li key={item.id}>

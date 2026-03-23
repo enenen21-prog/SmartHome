@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { fetchUsers } from '../api/users.api.js';
 
 const UsersContext = createContext(null);
@@ -8,33 +8,36 @@ export function UsersProvider({ children }) {
   const [isLoadingUsers, setIsLoadingUsers] = useState(true);
   const [usersError, setUsersError] = useState('');
 
-  const loadUsers = useCallback(async () => {
-    setIsLoadingUsers(true);
-    setUsersError('');
-    try {
-      const data = await fetchUsers();
-      setUsers(data);
-    } catch (err) {
-      const message = err?.response?.data?.message || 'Failed to load users.';
-      setUsersError(message);
-    } finally {
-      setIsLoadingUsers(false);
-    }
-  }, []);
+  const reloadUsers = useMemo(
+    () => async () => {
+      setIsLoadingUsers(true);
+      setUsersError('');
+      try {
+        const data = await fetchUsers();
+        setUsers(data);
+      } catch (err) {
+        const message = err?.response?.data?.message || 'Failed to load users.';
+        setUsersError(message);
+      } finally {
+        setIsLoadingUsers(false);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
+    reloadUsers();
+  }, [reloadUsers]);
 
   const value = useMemo(
     () => ({
       users,
       isLoadingUsers,
       usersError,
-      reloadUsers: loadUsers,
+      reloadUsers,
       setUsers,
     }),
-    [users, isLoadingUsers, usersError, loadUsers],
+    [users, isLoadingUsers, usersError, reloadUsers],
   );
 
   return <UsersContext.Provider value={value}>{children}</UsersContext.Provider>;

@@ -7,6 +7,12 @@ const ROLE_OPTIONS = [
   { value: 'viewer', label: 'Viewer' },
 ];
 
+const formClasses = 'grid grid-cols-1 gap-4 max-w-2xl';
+const twoColClasses = 'grid grid-cols-1 gap-4 md:grid-cols-2';
+const actionsClasses = 'flex items-center gap-3';
+const successTextClasses = 'text-sm text-emerald-300';
+const errorTextClasses = 'text-sm text-red-300';
+
 export default function UserForm({
   form,
   onChange,
@@ -16,8 +22,8 @@ export default function UserForm({
   error,
 }) {
   return (
-    <form className="grid grid-cols-1 gap-4 max-w-2xl" onSubmit={onSubmit}>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <form className={formClasses} onSubmit={onSubmit}>
+      <div className={twoColClasses}>
         <Input
           label="First Name"
           value={form.firstName}
@@ -52,15 +58,13 @@ export default function UserForm({
         options={ROLE_OPTIONS}
       />
 
-      <div className="flex items-center gap-3">
+      <div className={actionsClasses}>
         <Button type="submit" disabled={isSaving}>
           {isSaving ? 'Saving...' : 'Create User'}
         </Button>
-        {success ? (
-          <span className="text-sm text-emerald-300">{success}</span>
-        ) : null}
+        {success ? <span className={successTextClasses}>{success}</span> : null}
       </div>
-      {error ? <p className="text-sm text-red-300">{error}</p> : null}
+      {error ? <p className={errorTextClasses}>{error}</p> : null}
     </form>
   );
 }

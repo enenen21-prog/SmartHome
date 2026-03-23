@@ -6,6 +6,12 @@ import { useUsers } from '../../users/users-context.jsx';
 import { useUserActions } from './useUserActions.jsx';
 import UserItem from './UserItem.jsx';
 
+const headerTitleClasses = 'text-2xl font-semibold text-slate-100';
+const headerSubtextClasses = 'text-sm text-slate-400 mt-2';
+const listClasses =
+  'rounded-2xl bg-white/5 border border-white/10 shadow-[0_20px_40px_rgba(15,23,42,0.25)] divide-y divide-white/10';
+const loadingTextClasses = 'text-sm text-slate-300';
+
 const INITIAL_FORM = {
   firstName: '',
   lastName: '',
@@ -80,14 +86,14 @@ export default function UsersPage({ role }) {
       />
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-slate-100">Users</h1>
+          <h1 className={headerTitleClasses}>Users</h1>
           {isAdmin ? (
             <Button type="button" onClick={() => setShowForm((prev) => !prev)}>
               {showForm ? 'Close' : '+ Add User'}
             </Button>
           ) : null}
         </div>
-        <p className="text-sm text-slate-400 mt-2">
+        <p className={headerSubtextClasses}>
           Add new users and assign their role.
         </p>
       </div>
@@ -104,11 +110,11 @@ export default function UsersPage({ role }) {
       ) : null}
 
       {isLoadingUsers ? (
-        <p className="text-sm text-slate-300">Loading users...</p>
+        <p className={loadingTextClasses}>Loading users...</p>
       ) : users.length === 0 ? (
-        <p className="text-sm text-slate-300">No users yet.</p>
+        <p className={loadingTextClasses}>No users yet.</p>
       ) : (
-        <ul className="rounded-2xl bg-white/5 border border-white/10 shadow-[0_20px_40px_rgba(15,23,42,0.25)] divide-y divide-white/10">
+        <ul className={listClasses}>
           {users.map((user) => (
             <UserItem
               key={user.id}

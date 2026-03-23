@@ -16,10 +16,12 @@ const DEFAULT_RANGE = TIME_RANGES[0].id;
 export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
   const [range, setRange] = useState(DEFAULT_RANGE);
   const [samples, setSamples] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState({
+    samples: false,
+    weather: false,
+  });
   const [error, setError] = useState('');
   const [weather, setWeather] = useState(null);
-  const [isLoadingWeather, setIsLoadingWeather] = useState(false);
   const [weatherError, setWeatherError] = useState('');
 
   useEffect(() => {
@@ -28,7 +30,7 @@ export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
         setSamples([]);
         return;
       }
-      setIsLoading(true);
+      setLoading((prev) => ({ ...prev, samples: true }));
       setError('');
       try {
         const data = await getSamples({ roomId, deviceId, range });
@@ -37,14 +39,14 @@ export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
         console.error('Failed to load samples:', err);
         setError('Failed to load samples');
       } finally {
-        setIsLoading(false);
+        setLoading((prev) => ({ ...prev, samples: false }));
       }
     }
     loadSamples();
   }, [roomId, deviceId, range]);
 
   async function loadWeather() {
-    setIsLoadingWeather(true);
+    setLoading((prev) => ({ ...prev, weather: true }));
     setWeatherError('');
     try {
       const data = await fetchCurrentWeather();
@@ -71,7 +73,7 @@ export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
         setWeatherError('Failed to load current weather.');
       }
     } finally {
-      setIsLoadingWeather(false);
+      setLoading((prev) => ({ ...prev, weather: false }));
     }
   }
 
@@ -114,7 +116,7 @@ export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
       </div>
       <WeatherCard
         weather={weather}
-        isLoading={isLoadingWeather}
+        isLoading={loading.weather}
         error={weatherError}
         onRefresh={loadWeather}
         onGoToLocation={onGoToLocation}
@@ -125,7 +127,7 @@ export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
         </p>
       ) : null}
       {error ? <p className="text-red-300">{error}</p> : null}
-      {isLoading ? (
+      {loading.samples ? (
         <p className="text-slate-300">Loading samples...</p>
       ) : chartData.length === 0 ? (
         <p className="text-slate-300">No samples for this range.</p>
