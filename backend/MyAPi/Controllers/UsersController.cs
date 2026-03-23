@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyApi.DTO;
 using MyApi.Models;
+using MyApi.Security;
 
 namespace MyApi.Controllers;
 
@@ -35,12 +36,26 @@ public class UsersController : ControllerBase
         var password = request.Password.Trim();
 
         var user = await _db.Users
-            .FirstOrDefaultAsync(user =>
-                user.Email.ToLower() == email && user.Password == password);
+            .FirstOrDefaultAsync(user => user.Email.ToLower() == email);
 
         if (user == null)
         {
             return ApiResults.Message("Invalid credentials", 401);
+        }
+
+        var passwordHash = PasswordHasher.HashPassword(password, user.Email);
+
+        if (user.Password != passwordHash)
+        {
+            if (user.Password == password)
+            {
+                user.Password = passwordHash;
+                await _db.SaveChangesAsync();
+            }
+            else
+            {
+                return ApiResults.Message("Invalid credentials", 401);
+            }
         }
 
         var response = new LoginResponse
@@ -138,7 +153,7 @@ public class UsersController : ControllerBase
             FirstName = firstName,
             LastName = lastName,
             Email = email,
-            Password = password,
+            Password = PasswordHasher.HashPassword(password, email),
             Role = role
         };
 

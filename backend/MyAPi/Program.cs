@@ -3,6 +3,7 @@ using MyApi.Services;
 using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
+var hashUsersOnly = args.Contains("--hash-users");
 
 
 // Adding the DbContext
@@ -43,6 +44,15 @@ app.UseHttpsRedirection();
 app.UseCors("AllowReactDev");
 
 app.MapControllers();
+
+if (hashUsersOnly)
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<SmartHomeDbContext>();
+    var updated = await UserPasswordHashBackfill.RunAsync(db);
+    Console.WriteLine($"Hashed {updated} user password(s).");
+    return;
+}
 
 /* TEST */
 using (var scope = app.Services.CreateScope())

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyApi.Models;
+using MyApi.Security;
 
 public static class SampleDbTest
 {
@@ -76,6 +77,7 @@ public static class SampleDbTest
         var adminEmail = "ela@smarthome.local".ToLowerInvariant();
         var viewerEmail = "alex@smarthome.local".ToLowerInvariant();
 
+        var adminPassword = "password123";
         var admin = await db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == adminEmail);
         if (admin == null)
         {
@@ -84,7 +86,7 @@ public static class SampleDbTest
                 FirstName = "ela",
                 LastName = "zem",
                 Email = adminEmail,
-                Password = "password123",
+                Password = PasswordHasher.HashPassword(adminPassword, adminEmail),
                 Role = "admin"
             });
         }
@@ -92,10 +94,11 @@ public static class SampleDbTest
         {
             admin.FirstName = "ela";
             admin.LastName = "zem";
-            admin.Password = "password123";
+            admin.Password = PasswordHasher.HashPassword(adminPassword, adminEmail);
             admin.Role = "admin";
         }
 
+        var viewerPassword = "password123";
         var viewer = await db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == viewerEmail);
         if (viewer == null)
         {
@@ -104,7 +107,7 @@ public static class SampleDbTest
                 FirstName = "alex",
                 LastName = "zem",
                 Email = viewerEmail,
-                Password = "password123",
+                Password = PasswordHasher.HashPassword(viewerPassword, viewerEmail),
                 Role = "viewer"
             });
         }
@@ -112,7 +115,7 @@ public static class SampleDbTest
         {
             viewer.FirstName = "alex";
             viewer.LastName = "zem";
-            viewer.Password = "password123";
+            viewer.Password = PasswordHasher.HashPassword(viewerPassword, viewerEmail);
             viewer.Role = "viewer";
         }
 
