@@ -3,7 +3,7 @@ using MyApi.Models;
 
 public class SmartHomeDbContext : DbContext
 {
-    public const string DefaultDbName = "SmartHomeDb.sqlite";
+    public const string DefaultDbName = "SmartHomeDb1.sqlite";
     // DbSets for Rooms and Devices
     public DbSet<Room> Rooms { get; set; }
     public DbSet<Device> Devices { get; set; }
