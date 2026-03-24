@@ -44,6 +44,22 @@ namespace MyApi.Services
             var room = await _db.Rooms.FirstOrDefaultAsync(room => room.Id == id);
             if (room == null) return false;
 
+            var devices = await _db.Devices.Where(device => device.RoomId == id).ToListAsync();
+            if (devices.Count > 0)
+            {
+                var deviceIds = devices.Select(device => device.Id).ToList();
+                var samples = await _db.Samples
+                    .Where(sample => deviceIds.Contains(sample.DeviceId))
+                    .ToListAsync();
+
+                if (samples.Count > 0)
+                {
+                    _db.Samples.RemoveRange(samples);
+                }
+
+                _db.Devices.RemoveRange(devices);
+            }
+
             _db.Rooms.Remove(room);
             await _db.SaveChangesAsync();
             return true;

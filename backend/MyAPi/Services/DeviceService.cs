@@ -44,6 +44,12 @@ public class DeviceService : IDeviceService
         var device = await _db.Devices.FirstOrDefaultAsync(d => d.Id == id);
         if (device == null) return false;
 
+        var samples = await _db.Samples.Where(s => s.DeviceId == id).ToListAsync();
+        if (samples.Count > 0)
+        {
+            _db.Samples.RemoveRange(samples);
+        }
+
         _db.Devices.Remove(device);
         await _db.SaveChangesAsync();
         return true;
