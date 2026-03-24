@@ -21,7 +21,7 @@ generation.
 
 1 Each room can contain multiple devices.
 
-2 Each device samples four sensors: Temperature, Humidity, COn, and Air Pollution.
+2 Each device samples four sensors: Temperature, Humidity, COn, and Light.
 
 3 Devices can be deleted independently from rooms.
 
@@ -37,7 +37,7 @@ generation.
 
 4. Dashboard & Graphs
 
-1 The user dashboard displays four graphs: Temperature, Humidity, COn, and Air Pollution.
+1 The user dashboard displays four graphs: Temperature, Humidity, COn, and Light.
 
 2 Graphs can be viewed by time range: last day, last week, or last month.
 
@@ -50,35 +50,11 @@ generation.
 
 2 Weather data is retrieved from a third-party API such as Google or OpenWeather.
 
-3 Weather responses are cached to reduce external API calls.
 
-
-6. Alerts & Notifications
-
-1 Users can define alerts for sensor thresholds (greater than / less than).
-
-2 Alerts can be configured per room or per device.
-
-3 When triggered, alerts send email notifications to configured recipients.
-
-4 Alert history and cooldown logic prevent notification spam.
-
-
-7. Tip of the Hour
-
-1 The system generates a contextual tip every hour.
-
-2 Tips are based on recent sensor readings and trends.
-
-3 Examples include ventilation advice or air quality recommendations.
-
-
-8. Technology Stack
+6. Technology Stack
 
 1 Frontend: React, Charts library (Chart.js / Recharts)
 
 2 Backend: ASP.NET Core Web API, Entity Framework Core
 
 3 Database: SQL Server (time-series optimized)
-
-4 Notifications: Email (SMTP / SendGrid)
