@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyApi.DTO;
-using MyApi.Models;
 
 namespace MyApi.Controllers;
 
@@ -9,11 +7,11 @@ namespace MyApi.Controllers;
 [Route("api/[controller]")]
 public class LocationController : ControllerBase
 {
-    private readonly SmartHomeDbContext _db;
+    private readonly ILocationService _locationService;
 
-    public LocationController(SmartHomeDbContext db)
+    public LocationController(ILocationService locationService)
     {
-        _db = db;
+        _locationService = locationService;
     }
 
     /*
@@ -25,20 +23,21 @@ public class LocationController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetLocation()
     {
-        var location = await _db.HomeLocation.FirstOrDefaultAsync();
-        if (location == null)
+        try
         {
-            return ApiResults.Message("Home location is not set", 404);
+            var location = await _locationService.GetLocationAsync();
+            if (location == null)
+            {
+                return ApiResults.Message("Home location is not set", 404); // 404 - Not found
+            }
+
+            return ApiResults.Result(location, 200); // 200 - OK
         }
-
-        var response = new HomeLocationResponse
+        catch (Exception ex)
         {
-            City = location.City,
-            Country = location.Country,
-            UpdatedAtUtc = location.UpdatedAtUtc
-        };
-
-        return ApiResults.Result(response, 200);
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to fetch home location", 500); // 500 - Internal server error
+        }
     }
 
     /*
@@ -55,7 +54,7 @@ public class LocationController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(city) || string.IsNullOrWhiteSpace(country))
         {
-            return ApiResults.Message("City and country are required", 400);
+            return ApiResults.Message("City and country are required", 400); // 400 - Bad request
         }
 
         if (city.Length > 80 || country.Length > 80)
@@ -63,33 +62,15 @@ public class LocationController : ControllerBase
             return ApiResults.Message("City and country must be 80 characters or less", 400);
         }
 
-        var location = await _db.HomeLocation.FirstOrDefaultAsync();
-        if (location == null)
+        try
         {
-            location = new HomeLocation
-            {
-                City = city,
-                Country = country,
-                UpdatedAtUtc = DateTime.UtcNow
-            };
-            _db.HomeLocation.Add(location);
+            var response = await _locationService.SaveLocationAsync(request);
+            return ApiResults.Result(response, 200); // 200 - OK
         }
-        else
+        catch (Exception ex)
         {
-            location.City = city;
-            location.Country = country;
-            location.UpdatedAtUtc = DateTime.UtcNow;
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to save home location", 500);
         }
-
-        await _db.SaveChangesAsync();
-
-        var response = new HomeLocationResponse
-        {
-            City = location.City,
-            Country = location.Country,
-            UpdatedAtUtc = location.UpdatedAtUtc
-        };
-
-        return ApiResults.Result(response, 200);
     }
 }

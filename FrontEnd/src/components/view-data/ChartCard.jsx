@@ -21,6 +21,7 @@ const tooltipStyle = {
 const tooltipLabelStyle = { color: '#e2e8f0', fontSize: '0.75rem' };
 const tooltipItemStyle = { color: '#cbd5f5', fontSize: '0.75rem' };
 
+// Each metric gets its own colors so the charts stay easy to tell apart.
 const SERIES = {
   temperature: { stroke: '#0f766e', fill: '#99f6e4' },
   humidity: { stroke: '#2563eb', fill: '#bfdbfe' },
@@ -52,13 +53,16 @@ export default function ChartCard({ title, dataKey, data }) {
       </div>
       <div className="h-56">
         <ResponsiveContainer width="100%" height="100%">
+          {/* AreaChart renders the time-series line and filled area for one metric. */}
           <AreaChart data={data} margin={chartMargin}>
             <defs>
+              {/* Gradient fill under the curve. The id is unique per metric. */}
               <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={colors.fill} stopOpacity={0.55} />
                 <stop offset="95%" stopColor={colors.fill} stopOpacity={0.05} />
               </linearGradient>
             </defs>
+            {/* Grid and axes keep the dark chart readable. */}
             <CartesianGrid
               vertical={false}
               stroke={gridStyle.stroke}
@@ -76,12 +80,14 @@ export default function ChartCard({ title, dataKey, data }) {
               axisLine={{ stroke: '#1f2a37' }}
               width={44}
             />
+            {/* Tooltip shows the exact value for the hovered point. */}
             <Tooltip
               contentStyle={tooltipStyle}
               labelStyle={tooltipLabelStyle}
               itemStyle={tooltipItemStyle}
               cursor={{ stroke: '#334155', strokeWidth: 1 }}
             />
+            {/* The actual metric series line. */}
             <Area
               type="monotone"
               dataKey={dataKey}

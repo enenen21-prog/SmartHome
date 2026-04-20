@@ -25,6 +25,8 @@ function AppContent() {
       const user = await loginApi(email, password);
       setUserEmail(user.email);
       setRole(user.role);
+      setSelectedRoomId(null);
+      setSelectedDeviceId(null);
       setIsLoggedIn(true);
     } catch (error) {
       setLoginError('Invalid email or password.');

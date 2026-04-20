@@ -14,17 +14,24 @@ const TIME_RANGES = [
 const DEFAULT_RANGE = TIME_RANGES[0].id;
 
 export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
+  // Time range for the measurements chart.
   const [range, setRange] = useState(DEFAULT_RANGE);
+  // Raw samples returned from the API.
   const [samples, setSamples] = useState([]);
+  // Separate loading flags for sensor data and weather data.
   const [loading, setLoading] = useState({
     samples: false,
     weather: false,
   });
+  // General sample error shown above the charts.
   const [error, setError] = useState('');
+  // Current weather card data and its error state.
   const [weather, setWeather] = useState(null);
+  const [isLoadingWeather, setIsLoadingWeather] = useState(false);
   const [weatherError, setWeatherError] = useState('');
 
   useEffect(() => {
+    // Reload sensor samples whenever the selected room, device, or time range changes.
     async function loadSamples() {
       if (!roomId || !deviceId) {
         setSamples([]);
@@ -46,6 +53,7 @@ export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
   }, [roomId, deviceId, range]);
 
   async function loadWeather() {
+    // Weather is independent from the selected device, so it can be fetched on its own.
     setLoading((prev) => ({ ...prev, weather: true }));
     setWeatherError('');
     try {
@@ -90,6 +98,7 @@ export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
   }, []);
 
   const chartData = useMemo(() => {
+    // Convert API samples into the flat structure expected by the chart cards.
     return samples.map((sample) => ({
       time: new Date(sample.timestampUtc).toLocaleString(),
       temperature: sample.temperature,
@@ -99,6 +108,7 @@ export default function ViewData({ onBack, onGoToLocation, roomId, deviceId }) {
     }));
   }, [samples]);
 
+  // If either room or device is missing, there is nothing to plot yet.
   const selectionMissing = !roomId || !deviceId;
 
   return (

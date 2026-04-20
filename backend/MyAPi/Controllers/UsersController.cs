@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyApi.DTO;
-using MyApi.Models;
-using MyApi.Security;
 
 namespace MyApi.Controllers;
 
@@ -10,11 +7,11 @@ namespace MyApi.Controllers;
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly SmartHomeDbContext _db;
+    private readonly IUserService _userService;
 
-    public UsersController(SmartHomeDbContext db)
+    public UsersController(IUserService userService)
     {
-        _db = db;
+        _userService = userService;
     }
 
     /*
@@ -29,68 +26,45 @@ public class UsersController : ControllerBase
         if (string.IsNullOrWhiteSpace(request.Email) ||
             string.IsNullOrWhiteSpace(request.Password))
         {
-            return ApiResults.Message("Email and password are required", 400);
+            return ApiResults.Message("Email and password are required", 400); // 400 - Bad request
         }
 
-        var email = request.Email.Trim().ToLowerInvariant();
-        var password = request.Password.Trim();
-
-        var user = await _db.Users
-            .FirstOrDefaultAsync(user => user.Email.ToLower() == email);
-
-        if (user == null)
+        try
         {
-            return ApiResults.Message("Invalid credentials", 401);
-        }
-
-        var passwordHash = PasswordHasher.HashPassword(password, user.Email);
-
-        if (user.Password != passwordHash)
-        {
-            if (user.Password == password)
+            var response = await _userService.LoginAsync(request);
+            if (response == null)
             {
-                user.Password = passwordHash;
-                await _db.SaveChangesAsync();
+                return ApiResults.Message("Invalid credentials", 401); // 401 - Unauthorized
             }
-            else
-            {
-                return ApiResults.Message("Invalid credentials", 401);
-            }
+
+            return ApiResults.Result(response, 200); // 200 - OK
         }
-
-        var response = new LoginResponse
+        catch (Exception ex)
         {
-            Email = user.Email,
-            Role = user.Role,
-            FirstName = user.FirstName,
-            LastName = user.LastName
-        };
-
-        return ApiResults.Result(response, 200);
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to login", 500); // 500 - Internal server error
+        }
     }
 
     /*
     Description: Retrieves all users.
     Input: None.
-    Return: List of UserResponse.
+    Return: List of Users Response.
     API: GET: api/users
     */
     [HttpGet]
     public async Task<ActionResult<List<UserResponse>>> GetUsers()
     {
-        var users = await _db.Users
-            .OrderBy(user => user.Id)
-            .Select(user => new UserResponse
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Role = user.Role
-            })
-            .ToListAsync();
-
-        return ApiResults.Result(users, 200);
+        try
+        {
+            var users = await _userService.GetUsersAsync();
+            return ApiResults.Result(users, 200); // 200 - OK
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to fetch users", 500); // 500 - Internal server error
+        }
     }
 
     /*
@@ -102,15 +76,21 @@ public class UsersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
-        if (user == null)
+        try
         {
-            return ApiResults.Message("User not found", 404);
-        }
+            var success = await _userService.DeleteUserAsync(id);
+            if (!success)
+            {
+                return ApiResults.Message("User not found", 404); // 404 - Not found
+            }
 
-        _db.Users.Remove(user);
-        await _db.SaveChangesAsync();
-        return ApiResults.Result(null, 204);
+            return ApiResults.Result(null, 204); // 204 - No content, successfully deleted
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to delete user", 500); // 500 - Internal server error
+        }
     }
 
     /*
@@ -122,53 +102,35 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<UserResponse>> CreateUser([FromBody] UserCreateRequest request)
     {
-        var firstName = request.FirstName.Trim();
-        var lastName = request.LastName.Trim();
-        var email = request.Email.Trim().ToLowerInvariant();
-        var password = request.Password.Trim();
-        var role = request.Role.Trim().ToLowerInvariant();
-
-        if (string.IsNullOrWhiteSpace(firstName) ||
-            string.IsNullOrWhiteSpace(lastName) ||
-            string.IsNullOrWhiteSpace(email) ||
-            string.IsNullOrWhiteSpace(password) ||
-            string.IsNullOrWhiteSpace(role))
+        if (string.IsNullOrWhiteSpace(request.FirstName) ||
+            string.IsNullOrWhiteSpace(request.LastName) ||
+            string.IsNullOrWhiteSpace(request.Email) ||
+            string.IsNullOrWhiteSpace(request.Password) ||
+            string.IsNullOrWhiteSpace(request.Role))
         {
-            return ApiResults.Message("All fields are required", 400);
+            return ApiResults.Message("All fields are required", 400); // 400 - Bad request
         }
 
+        var role = request.Role.Trim().ToLowerInvariant();
         if (role != "admin" && role != "viewer")
         {
             return ApiResults.Message("Role must be admin or viewer", 400);
         }
 
-        var existing = await _db.Users.FirstOrDefaultAsync(user => user.Email.ToLower() == email);
-        if (existing != null)
+        try
         {
-            return ApiResults.Message("Email already exists", 409);
+            var response = await _userService.CreateUserAsync(request);
+            if (response == null)
+            {
+                return ApiResults.Message("Email already exists", 409); // 409 - Conflict
+            }
+
+            return ApiResults.Result(response, 201); // 201 - Created successfully with content
         }
-
-        var user = new User
+        catch (Exception ex)
         {
-            FirstName = firstName,
-            LastName = lastName,
-            Email = email,
-            Password = PasswordHasher.HashPassword(password, email),
-            Role = role
-        };
-
-        _db.Users.Add(user);
-        await _db.SaveChangesAsync();
-
-        var response = new UserResponse
-        {
-            Id = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            Email = user.Email,
-            Role = user.Role
-        };
-
-        return ApiResults.Result(response, 201);
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to create user", 500); // 500 - Internal server error
+        }
     }
 }

@@ -27,12 +27,12 @@ public class RoomsController : ControllerBase
         try
         {
             var rooms = await _roomService.GetRoomsAsync();
-            return ApiResults.Result(rooms, 200);
+            return ApiResults.Result(rooms, 200); // 200 - OK
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine(ex);
-            return ApiResults.Message("Failed to fetch rooms", 500);
+            return ApiResults.Message("Failed to fetch rooms", 500); // 500 - Internal server error
         }
     }
 

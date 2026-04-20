@@ -24,8 +24,16 @@ public class DevicesController : ControllerBase
     [HttpGet("room/{roomId}")]
     public async Task<ActionResult<List<Device>>> GetDevicesByRoomId(int roomId)
     {
-        var devices = await _deviceService.GetDevicesByRoomIdAsync(roomId);
-        return ApiResults.Result(devices, 200);
+        try
+        {
+            var devices = await _deviceService.GetDevicesByRoomIdAsync(roomId);
+            return ApiResults.Result(devices, 200); // 200 - OK
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to fetch devices", 500); // 500 - Internal server error
+        }
     }
 
     /*
@@ -38,7 +46,7 @@ public class DevicesController : ControllerBase
     public async Task<ActionResult<Device>> AddDevice([FromBody] Device newDevice)
     {
         if (string.IsNullOrWhiteSpace(newDevice.Name))
-            return ApiResults.Message("Name is required", 400);
+            return ApiResults.Message("Name is required", 400); // 400 - Bad request
 
         if (string.IsNullOrWhiteSpace(newDevice.Ipv4Address))
             return ApiResults.Message("IPv4 address is required", 400);
@@ -46,8 +54,16 @@ public class DevicesController : ControllerBase
         if (newDevice.RoomId <= 0)
             return ApiResults.Message("RoomId is required", 400);
 
-        var createdDevice = await _deviceService.AddDeviceAsync(newDevice);
-        return ApiResults.Result(createdDevice, 201);
+        try
+        {
+            var createdDevice = await _deviceService.AddDeviceAsync(newDevice);
+            return ApiResults.Result(createdDevice, 201); // 201 - Created successfully with content
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to create device", 500); // 500 - Internal server error
+        }
     }
 
     /*
@@ -59,10 +75,18 @@ public class DevicesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDevice(int id)
     {
-        var success = await _deviceService.DeleteDeviceAsync(id);
-        if (!success)
-            return ApiResults.Message("Device not found", 404);
+        try
+        {
+            var success = await _deviceService.DeleteDeviceAsync(id);
+            if (!success)
+                return ApiResults.Message("Device not found", 404); // 404 - Not found
 
-        return ApiResults.Result(null, 204);
+            return ApiResults.Result(null, 204); // 204 - Deleted successfully with no content
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex);
+            return ApiResults.Message("Failed to delete device", 500); // 500 - Internal server error
+        }
     }
 }

@@ -43,7 +43,7 @@ public static class SampleDbTest
 
         var baseTime = DateTime.UtcNow;
         var samples = new List<Sample>();
-        for (var i = 0; i < 11; i++)
+        for (var i = 0; i <= 10; i++)
         {
             samples.Add(new Sample
             {
